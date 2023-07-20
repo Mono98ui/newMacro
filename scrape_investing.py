@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as fser
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from database import database
 
 def openWebBrowser():
@@ -34,29 +35,31 @@ def method_ShowMore(driver, info_link):
     for iter in soup.tbody.find_all("tr"):
         print(iter["event_timestamp"])
 
-def method_HistoricalData(driver):
+def method_HistoricalData(driver, link):
+    driver.get(link)
     dateBtn = driver.find_element(By.CLASS_NAME, "DatePickerWrapper_input__UVqms")
     dateBtn.click()
-    inputDate = driver.find_elements(By.CSS_SELECTOR,"input[type='date']")[0]
-    action = webdriver.common.action_chains.ActionChains(driver)
-    action.move_to_element_with_offset(inputDate, 5, 5)
-    #action.click()
-    #action.perform()
+    inputDate = driver.find_elements(By.CSS_SELECTOR,"input[type='date'][max='2023-07-20']")[0]
+    ActionChains(driver).scroll_by_amount(0, 600).perform()
+    ActionChains(driver).move_to_element_with_offset(inputDate,0, 44).perform()
+
     #print(inputDate.get_attribute('outerHTML'))
     #inputDate.clear()
     #inputDate.send_keys("2002-01-01")
     #driver.execute_script("arguments[0].setAttribute('value', arguments[1])", inputDate, "2002-01-01")
-    submitBtn = driver.find_element(By.CSS_SELECTOR, "button[class='inv-button HistoryDatePicker_apply-button__Oj7Hu']")
-    submitBtn.click()
+    #submitBtn = driver.find_element(By.CSS_SELECTOR, "button[class='inv-button HistoryDatePicker_apply-button__Oj7Hu']")
+    #submitBtn.click()
     time.sleep(5)
 
 
 
-db = database("MacroDB","Test_user","test")
-info_links=db.fetch_links()
+#db = database("MacroDB","Test_user","test")
+#info_links=db.fetch_links()
 driver = openWebBrowser()
-for info_link in info_links:
-    if info_link[2]:
-        method_ShowMore(driver,info_link)
+driver.maximize_window()
+method_HistoricalData(driver, "https://ca.investing.com/commodities/copper-historical-data")
+#for info_link in info_links:
+#    if info_link[2]:
+#        method_ShowMore(driver,info_link)
 
 driver.quit()
