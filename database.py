@@ -8,8 +8,8 @@ class database:
         self.username = username
         self.password = password
 
-    def insert_links():
-        conn = psycopg2.connect("dbname=MacroDB user=Test_user password=test")
+    def insert_links(self):
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
         f = open("links.txt", "r")
         lines = f.readlines()
@@ -20,15 +20,15 @@ class database:
                 .format(sql.Identifier("t_links_inv")),
             [tabLink[0], tabLink[1], tabLink[2]])
 
-        #cur.execute("select * from testtable")
-        #print(cur.fetchone())
         conn.commit()
         conn.close()
 
-    def fetch_links():
-        conn = psycopg2.connect("dbname=MacroDB user=Test_user password=test")
+    def fetch_links(self):
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
-        cur.execute("select * from testtable")
-        #print(cur.fetchone())
+        cur.execute("select * from t_links_inv")
+        #print(cur.fetchall())
+        links = cur.fetchall()
         conn.close()
+        return links
 

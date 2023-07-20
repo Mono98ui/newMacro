@@ -4,13 +4,21 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as fser
 from selenium.webdriver.common.keys import Keys
-import database
+from database import database
 
+def openWebBrowser():
+    options = webdriver.FirefoxOptions()
+    options.binary_location = "C:/Program Files/Mozilla Firefox/firefox.exe"
+    webdriver_path="./geckodriver.exe"
+    driver = webdriver.Firefox(service=fser(executable_path=webdriver_path), options=options)
+    return driver
 
-def method_ShowMore(driver):
-    showMore = driver.find_element(By.ID,"showMoreHistory70")
+def method_ShowMore(driver, info_link):
+    driver.get(info_link[1])
+    showMore = driver.find_element(By.ID,info_link[2])
     compter = 0
-    while( compter < 42):
+    
+    while( compter < 42 and showMore.is_displayed() and showMore.is_enabled()):
         showMore.click()
         compter+=1
         time.sleep(1)
@@ -42,14 +50,13 @@ def method_HistoricalData(driver):
     submitBtn.click()
     time.sleep(5)
 
-URL = "https://ca.investing.com/economic-calendar/us-leading-index-1968"
-options = webdriver.FirefoxOptions()
-options.binary_location = "C:/Program Files/Mozilla Firefox/firefox.exe"
-webdriver_path="./geckodriver.exe"
-driver = webdriver.Firefox(service=fser(executable_path=webdriver_path), options=options)
-driver.get(URL)
 
-#method_HistoricalData(driver)
-method_ShowMore(driver)
+
+db = database("MacroDB","Test_user","test")
+info_links=db.fetch_links()
+driver = openWebBrowser()
+for info_link in info_links:
+    if info_link[2]:
+        method_ShowMore(driver,info_link)
 
 driver.quit()
