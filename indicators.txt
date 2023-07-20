@@ -1,0 +1,30 @@
+MYAGM1USM052S:M1 Money Stock
+MYAGM2USM052S:M2 Money Stock
+BOGZ1FL893169105Q:All Sectors; Commercial Paper; Liability
+BUSLOANS: Commercial and Industrial Loans
+TOTALSL:Total Consumer Credit Owned and Securitized Outstanding
+INDPRO:Industrial Production:Total Index
+NOCDFSA066MSFRBPHI:Current New Orders; Diffusion Index for Federal Reserve District 3:Philadelphia 
+PCE:Personal Consumption Expenditures
+PAYEMS:All Employees Total Nonfarm
+AWHMAN:Average Weekly Hours of Production and Nonsupervisory Employees Manufacturing
+USALOLITONOSTSAM:Leading Indicators OECD:Leading indicators:CLI:Normalised for the United States
+HOUST:New Privately-Owned Housing Units Started:Total Units
+PERMIT:New Privately-Owned Housing Units Authorized in Permit-Issuing Places:Total Units
+RETAIL:Retail Sales (Monthly)
+IC4WSA:4-Week Moving Average of Initial Claims
+HTRUCKSSA:Motor Vehicle Retail Sales:Heavy Weight Trucks
+BOGZ1FL145020011Q:Nonfinancial Business; Inventories (Excluding Farms)
+CPIAUCSL:Consumer Price Index for All Urban Consumers:All Items in U.S. City Average
+PPIACO:Producer Price Index by Commodity:All Commodities
+AHETPI:Average Hourly Earnings of Production and Nonsupervisory Employees Total Private
+DTWEXM:Trade Weighted U.S. Dollar Index:Major Currencies Goods
+NFORBRES:Net Free or Borrowed Reserves of Depository Institutions
+BOGNONBR:Non-Borrowed Reserves of Depository Institutions
+REQRESNS:Required Reserves of Depository Institution
+T10YFF:10-Year Treasury Constant Maturity Minus Federal Funds Rate
+DTB3:3-Month Treasury Bill:Secondary Market Rate
+FEDFUNDS:Effective Federal Funds Rate
+INTDSRUSM193N:Interest Rates Discount Rate for United States
+GACDFSA066MSFRBPHI: Current General Activity; Diffusion Index for Federal Reserve District 3:Philadelphia
+TB3MS:-Month Treasury Bill:Secondary Market Rate (1934)

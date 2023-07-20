@@ -1,0 +1,8 @@
+https://ca.investing.com/economic-calendar/us-leading-index-1968;showMoreHistory1968;30
+https://ca.investing.com/economic-calendar/building-permits-25;showMoreHistory25;30
+https://ca.investing.com/economic-calendar/chicago-pmi-38;showMoreHistory38;30
+https://ca.investing.com/economic-calendar/total-vehicle-sales-85;showMoreHistory85;30
+https://ca.investing.com/commodities/copper-historical-data;;1
+https://ca.investing.com/indices/s-p-goldman-sachs-commodity-index-historical-data;;1
+https://ca.investing.com/commodities/silver-historical-data;;1
+https://ca.investing.com/indices/usdollar-historical-data;;1
