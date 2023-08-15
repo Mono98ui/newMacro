@@ -16,9 +16,21 @@ class database:
         for line in lines:
             tabLink = line.split(";")#tableau
             cur.execute(
-            sql.SQL("insert into {}(links, show_more, inter) values (%s, %s, %s)")
+            sql.SQL("insert into {}(links, show_more, inter, t_name) values (%s, %s, %s, %s)")
                 .format(sql.Identifier("t_links_inv")),
-            [tabLink[0], tabLink[1], tabLink[2]])
+            tabLink)
+
+        conn.commit()
+        conn.close()
+
+    def insert_value_component(self, t_name, list_data):
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
+        cur = conn.cursor()
+        for data in list_data:
+            cur.execute(
+            sql.SQL("insert into {}(date, value, country) values (%s, %s, %s)")
+                .format(sql.Identifier(t_name)),
+            [data["date"], data["value"], data["country"]])
 
         conn.commit()
         conn.close()

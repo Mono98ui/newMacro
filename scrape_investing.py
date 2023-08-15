@@ -6,6 +6,8 @@ from selenium.webdriver.firefox.service import Service as fser
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from database import database
+from datetime import datetime
+
 
 def openWebBrowser():
     options = webdriver.FirefoxOptions()
@@ -14,52 +16,69 @@ def openWebBrowser():
     driver = webdriver.Firefox(service=fser(executable_path=webdriver_path), options=options)
     return driver
 
+def standardisePercentage(index, value):
+    nbr = float(value.replace("%", ""))
+    return round(index * (1.00 + nbr/100.00), 2)
+
+def removeNotations(value):
+    return  float(value.replace("M", ""))
+
+def format_data_db(tableName, timestamp, value, country):
+    data={
+        "table":tableName,
+        "timestamp": datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S'),
+        "value":value,
+        "country": country
+    }
+    return data
+
+
+
 def method_ShowMore(driver, info_link):
+    index = 1.00 #valeur arbitraire
     driver.get(info_link[1])
     showMore = driver.find_element(By.ID,info_link[2])
+    tableName=info_link[3]
     compter = 0
+    list_data = []
     
     while( compter < 42 and showMore.is_displayed() and showMore.is_enabled()):
         showMore.click()
         compter+=1
-        time.sleep(1)
+        time.sleep(0.5)
 
 
     page = driver.page_source
 
     soup = BeautifulSoup(page, "html.parser")
 
-    for iter in soup.tbody.find_all("span"):
-        print(iter.text)
-
     for iter in soup.tbody.find_all("tr"):
-        print(iter["event_timestamp"])
+        value = -1000.00 #valeur initial arbitraire
+        country = "US"
+        timestamp = iter["event_timestamp"]
+        textValue = iter.find("span").text
+        if "%" in textValue:
+            value = standardisePercentage(index, textValue)
+            index = value
+        elif "M" in textValue:
+            value = removeNotations(textValue)
+        if textValue.strip():
+            data = format_data_db(tableName, timestamp, value, country)
+            list_data.append(data)
+        
+    return list_data
 
-def method_HistoricalData(driver, link):
-    driver.get(link)
-    dateBtn = driver.find_element(By.CLASS_NAME, "DatePickerWrapper_input__UVqms")
-    dateBtn.click()
-    inputDate = driver.find_elements(By.CSS_SELECTOR,"input[type='date'][max='2023-07-20']")[0]
-    ActionChains(driver).scroll_by_amount(0, 600).perform()
-    ActionChains(driver).move_to_element_with_offset(inputDate,0, 44).perform()
-
-    #print(inputDate.get_attribute('outerHTML'))
-    #inputDate.clear()
-    #inputDate.send_keys("2002-01-01")
-    #driver.execute_script("arguments[0].setAttribute('value', arguments[1])", inputDate, "2002-01-01")
-    #submitBtn = driver.find_element(By.CSS_SELECTOR, "button[class='inv-button HistoryDatePicker_apply-button__Oj7Hu']")
-    #submitBtn.click()
-    time.sleep(5)
-
-
-
-#db = database("MacroDB","Test_user","test")
-#info_links=db.fetch_links()
+db = database("MacroDB","Test_user","test")
+info_links=db.fetch_links()
 driver = openWebBrowser()
 driver.maximize_window()
-method_HistoricalData(driver, "https://ca.investing.com/commodities/copper-historical-data")
-#for info_link in info_links:
-#    if info_link[2]:
-#        method_ShowMore(driver,info_link)
+for info_link in info_links:
+
+    #if showMore is not empty
+    if info_link[2]:
+        data = method_ShowMore(driver,info_link)
+        print(data)
+        #db.insert_value_component(info_link[3], data)
+        break
 
 driver.quit()
