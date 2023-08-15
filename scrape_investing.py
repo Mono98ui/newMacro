@@ -23,12 +23,10 @@ def standardisePercentage(index, value):
 def removeNotations(value):
     return  float(value.replace("M", ""))
 
-def format_data_db(tableName, timestamp, value, country):
+def format_data_db(timestamp, value):
     data={
-        "table":tableName,
-        "timestamp": datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S'),
+        "timestamp": timestamp,
         "value":value,
-        "country": country
     }
     return data
 
@@ -38,14 +36,16 @@ def method_ShowMore(driver, info_link):
     index = 1.00 #valeur arbitraire
     driver.get(info_link[1])
     showMore = driver.find_element(By.ID,info_link[2])
-    tableName=info_link[3]
+    tableName=info_link[4].strip()
     compter = 0
     list_data = []
+    #fix
+    compter_fix = 0;
     
     while( compter < 42 and showMore.is_displayed() and showMore.is_enabled()):
         showMore.click()
         compter+=1
-        time.sleep(0.5)
+        time.sleep(0.2)
 
 
     page = driver.page_source
@@ -55,15 +55,30 @@ def method_ShowMore(driver, info_link):
     for iter in soup.tbody.find_all("tr"):
         value = -1000.00 #valeur initial arbitraire
         country = "US"
-        timestamp = iter["event_timestamp"]
-        textValue = iter.find("span").text
+        timestamp =  datetime.strptime(iter["event_timestamp"], '%Y-%m-%d %H:%M:%S')
+        #fix les donnees
+        if timestamp == datetime(2013, 11, 26, 13, 30) and tableName == "t_building_permits_25":
+            compter_fix+=1
+            if compter_fix > 1:
+                timestamp = datetime(2013, 10, 26, 13, 30)
+
+        textValue = iter.find("span").text.replace(",", "")
+
+        #fix les donnees
+        if timestamp == datetime(1993, 2, 1, 9, 0) and tableName == "t_total_vehicle_sales_85":
+            textValue = "13.22M"
+
+
         if "%" in textValue:
             value = standardisePercentage(index, textValue)
             index = value
         elif "M" in textValue:
             value = removeNotations(textValue)
+        elif textValue.strip():
+            value = float(textValue)
+
         if textValue.strip():
-            data = format_data_db(tableName, timestamp, value, country)
+            data = format_data_db(timestamp, value)
             list_data.append(data)
         
     return list_data
@@ -78,7 +93,7 @@ for info_link in info_links:
     if info_link[2]:
         data = method_ShowMore(driver,info_link)
         print(data)
-        #db.insert_value_component(info_link[3], data)
-        break
+        print(info_link[4])
+        db.insert_value_component(info_link[4].strip(), data)
 
 driver.quit()

@@ -27,10 +27,11 @@ class database:
         conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
         for data in list_data:
+            #Ajouter  "ON CONFLICT (date) DO NOTHING" a la requete pour debugger
             cur.execute(
-            sql.SQL("insert into {}(date, value, country) values (%s, %s, %s)")
+            sql.SQL("insert into {}(date, value) values (%s, %s)")
                 .format(sql.Identifier(t_name)),
-            [data["date"], data["value"], data["country"]])
+            [data["timestamp"], data["value"]])
 
         conn.commit()
         conn.close()
