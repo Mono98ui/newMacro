@@ -44,4 +44,15 @@ class database:
         links = cur.fetchall()
         conn.close()
         return links
+    
+    def fetch_component(self, t_name):
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
+        cur = conn.cursor()
+        cur.execute("select * from {}")
+        cur.execute(
+            sql.SQL("select * from {}")
+                .format(sql.Identifier(t_name)))
+        datas = cur.fetchall()
+        conn.close()
+        return datas
 
