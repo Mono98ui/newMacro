@@ -11,6 +11,7 @@ from datetime import datetime
 
 def openWebBrowser():
     options = webdriver.FirefoxOptions()
+    #A modifier
     options.binary_location = "C:/Program Files/Mozilla Firefox/firefox.exe"
     webdriver_path="./geckodriver.exe"
     driver = webdriver.Firefox(service=fser(executable_path=webdriver_path), options=options)
@@ -54,7 +55,6 @@ def method_ShowMore(driver, info_link):
 
     for iter in soup.tbody.find_all("tr"):
         value = -1000.00 #valeur initial arbitraire
-        country = "US"
         timestamp =  datetime.strptime(iter["event_timestamp"], '%Y-%m-%d %H:%M:%S')
         #fix les donnees
         if timestamp == datetime(2013, 11, 26, 13, 30) and tableName == "t_building_permits_25":
@@ -83,7 +83,36 @@ def method_ShowMore(driver, info_link):
         
     return list_data
 
+def method_ShowMore_Newest(driver, info_link):
+
+    index = 1.00 #valeur arbitraire
+    driver.get(info_link[1])
+    list_data = []
+    
+    page = driver.page_source
+
+    soup = BeautifulSoup(page, "html.parser")
+    iter = soup.tbody.find("tr")
+    value = -1000.00 #valeur initial arbitraire
+    timestamp =  datetime.strptime(iter["event_timestamp"], '%Y-%m-%d %H:%M:%S')
+    textValue = iter.find("span").text.replace(",", "")
+
+    if "%" in textValue:
+        value = standardisePercentage(index, textValue)
+        index = value
+    elif "M" in textValue:
+        value = removeNotations(textValue)
+    elif textValue.strip():
+        value = float(textValue)
+
+    if textValue.strip():
+        data = format_data_db(timestamp, value)
+        list_data.append(data)
+        
+    return list_data
+
 db = database("MacroDB","Test_user","test")
+db.update_status(1, 1)
 info_links=db.fetch_links()
 driver = openWebBrowser()
 driver.maximize_window()
@@ -91,9 +120,14 @@ for info_link in info_links:
 
     #if showMore is not empty
     if info_link[2]:
-        data = method_ShowMore(driver,info_link)
-        print(data)
-        print(info_link[4])
-        db.insert_value_component(info_link[4].strip(), data)
-
+        try:
+            #data = method_ShowMore(driver,info_link)
+            data = method_ShowMore_Newest(driver,info_link)
+            print(data)
+            print(info_link[4])
+            db.insert_value_component(info_link[4].strip(), data)
+        except:
+            #Creer des logs
+            db.update_status(1, 2)
 driver.quit()
+db.update_status(1, 0)

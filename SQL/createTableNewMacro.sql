@@ -1,9 +1,13 @@
+-- fusionner les liens ensemble dans une seule table si tout standardiser
 drop table if exists t_links_inv;
 --Economic Growth
 drop table if exists t_us_leading_index_1968;
 drop table if exists t_building_permits_25;
 drop table if exists t_chicago_pmi_38;
 drop table if exists t_total_vehicle_sales_85;
+
+drop table if exists t_status_scraper;
+
 
 CREATE TABLE t_links_inv (
 	id serial PRIMARY KEY,
@@ -12,6 +16,12 @@ CREATE TABLE t_links_inv (
 	inter integer NOT NULL,
 	t_name varchar(50)
 );
+CREATE TABLE t_status_scraper (
+	id serial PRIMARY KEY,
+	scraper_name varchar(50) NOT NULL UNIQUE,
+	status integer NOT NULL
+);
+
 
 CREATE TABLE t_us_leading_index_1968 (
 	date timestamp NOT NULL UNIQUE,

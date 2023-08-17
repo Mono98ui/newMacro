@@ -1,0 +1,1 @@
+insert into t_status_scraper(scraper_name, status) values('scraper_investing', 0)
