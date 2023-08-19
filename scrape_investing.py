@@ -128,6 +128,6 @@ for info_link in info_links:
             db.insert_value_component(info_link[4].strip(), data)
         except:
             #Creer des logs
-            db.update_status(1, 2)
+            db.update_status(1, -1)
 driver.quit()
-db.update_status(1, 0)
+db.update_status(1, 2)
