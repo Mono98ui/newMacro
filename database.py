@@ -36,15 +36,28 @@ class database:
         conn.commit()
         conn.close()
 
-    def fetch_links(self, columnName="", columnVal=""):
-        return self.fetch_table("t_links_inv", columnName, columnVal)
+    def insert_value_component_gr(self, t_name, list_data):
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
+        cur = conn.cursor()
+        for data in list_data:
+            #Ajouter  "ON CONFLICT (date) DO NOTHING" a la requete pour debugger
+            cur.execute(
+            sql.SQL("insert into {}(date, value, intervalMonth) values (%s, %s, %s) ON CONFLICT (date, intervalMonth) DO NOTHING")
+                .format(sql.Identifier(t_name)),
+            [data["timestamp"], data["value"], data["intervalMonth"]])
+
+        conn.commit()
+        conn.close()
+
+    def fetch_links(self, columnName="", operator="=", columnVal=""):
+        return self.fetch_table("t_links_inv", columnName, operator, columnVal)
     
-    def fetch_status(self, columnName="", columnVal=""):
-        return self.fetch_table("t_status_scraper", columnName, columnVal)
+    def fetch_status(self, columnName="", operator="=", columnVal=""):
+        return self.fetch_table("t_status_scraper", columnName, operator, columnVal)
     
     #faire une sql builder pour pouvoir mettre beaucoup de condition
-    def fetch_table(self, t_name, columnName, columnVal):
-        where = sql.SQL("where {}={}").format(sql.Identifier(columnName), sql.Literal(columnVal)) if columnName and columnVal else sql.SQL("")
+    def fetch_table(self, t_name, columnName, operator, columnVal):
+        where = sql.SQL("where {}{}{}").format(sql.SQL(columnName), sql.SQL(operator), sql.Literal(columnVal)) if columnName and columnVal else sql.SQL("")
         conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
         cur.execute(

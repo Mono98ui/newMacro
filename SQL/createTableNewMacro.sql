@@ -6,6 +6,13 @@ drop table if exists t_building_permits_25;
 drop table if exists t_chicago_pmi_38;
 drop table if exists t_total_vehicle_sales_85;
 
+--Econimic Growth GrowthRate
+drop table if exists t_us_leading_index_1968_gr;
+drop table if exists t_building_permits_25_gr;
+drop table if exists t_chicago_pmi_38_gr;
+drop table if exists t_total_vehicle_sales_85_gr;
+
+--Status scrapper
 drop table if exists t_status_scraper;
 
 
@@ -41,6 +48,35 @@ CREATE TABLE t_chicago_pmi_38 (
 CREATE TABLE t_total_vehicle_sales_85 (
 	date timestamp NOT NULL UNIQUE,
 	value float NOT NULL
+);
+
+
+CREATE TABLE t_us_leading_index_1968_gr (
+	date timestamp NOT NULL,
+	value float,
+	intervalMonth integer NOT null ,
+	PRIMARY KEY(date, intervalMonth)
+);
+
+CREATE TABLE t_building_permits_25_gr (
+	date timestamp NOT NULL,
+	value float,
+	intervalMonth integer NOT null,
+	PRIMARY KEY(date, intervalMonth)
+);
+
+CREATE TABLE t_chicago_pmi_38_gr (
+	date timestamp NOT NULL,
+	value float,
+	intervalMonth integer NOT null ,
+	PRIMARY KEY(date, intervalMonth)
+);
+
+CREATE TABLE t_total_vehicle_sales_85_gr (
+	date timestamp NOT NULL,
+	value float,
+	intervalMonth integer NOT null ,
+	PRIMARY KEY(date, intervalMonth)
 );
 
 
