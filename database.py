@@ -57,9 +57,10 @@ class database:
         for data in list_data:
             #Ajouter  "ON CONFLICT (date) DO NOTHING" a la requete pour debugger
             cur.execute(
-            sql.SQL("insert into {}(date, value, intervalMonth) values (%s, %s, %s) ON CONFLICT (date, intervalMonth) DO NOTHING")
-                .format(sql.Identifier(t_name)),
-            [data["timestamp"], data["value"], data["intervalMonth"]])
+            sql.SQL("insert into {}(date, value, intervalMonth) values (%s, %s, %s) ON CONFLICT (date, intervalMonth) DO "+
+                    "update set value = %s where {}.date = %s and {}.intervalMonth = %s")
+                .format(sql.Identifier(t_name), sql.Identifier(t_name), sql.Identifier(t_name)),
+            [data["timestamp"], data["value"], data["intervalMonth"], data["value"], data["timestamp"], data["intervalMonth"]])
 
         conn.commit()
         conn.close()

@@ -5,7 +5,7 @@ from database import database
 start = datetime (2002, 1, 1)
 end = datetime (2040, 6, 1)
 db = database("MacroDB","Test_user","test")
-db.update_status("process_investing", 1)
+#db.update_status("process_investing", 1)
 indicators = db.fetch_indicators()
 
 for indicator in indicators:
@@ -25,4 +25,4 @@ for indicator in indicators:
         db.insert_value_component(indicator[3].strip().lower(), list_datas)
     except:
         db.update_status("process_investing", -1)
-db.update_status("process_investing", 2)
+#db.update_status("process_investing", 2)
