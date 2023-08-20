@@ -5,6 +5,20 @@ import backtrader as bt
 import backtrader.feeds as btfeeds
 import backtrader.analyzers as btanalyzers
 from ThreeTwelveCross import ThreeTwelveCross
+import datetime
+
+#a modifier !!!!
+tbthree = "Data/TB3MS.csv"
+start = datetime.datetime(2002, 1, 1)
+end = datetime.datetime(2023, 8, 19)
+dateFormat = "%Y-%m-%d"
+threeColumn = 2
+twelveColumn = 3
+timeframe = bt.TimeFrame.Months
+dictDf = {}
+listNames = ["title","total","win-count",
+"percent-win","pnl-average", "trade-len","expected-value"]
+
 
 cerebro = bt.Cerebro()
 
@@ -19,14 +33,14 @@ cerebro.addobserver(
 cerebro.addstrategy(ThreeTwelveCross)
 
 data1 = btfeeds.GenericCSVData(
-    dataname=self.tbthree,
+    dataname=tbthree,
 
-    fromdate=self.start,
-    todate=self.end,
-    timeframe=self.timeframe ,
+    fromdate=start,
+    todate=end,
+    timeframe=timeframe ,
     nullvalue=0.0,
 
-    dtformat=(self.dateFormat),
+    dtformat=(dateFormat),
 
     datetime=0,
     high=1,
@@ -41,18 +55,18 @@ cerebro.adddata(data1, name='3-month-yield')
 data2 = btfeeds.GenericCSVData(
     dataname="Data/{name}.csv".format(name=key),
 
-    fromdate=self.start,
-    todate=self.end,
-    timeframe=self.timeframe ,
+    fromdate=start,
+    todate=end,
+    timeframe=timeframe ,
     nullvalue=0.0,
 
-    dtformat=(self.dateFormat),
+    dtformat=(dateFormat),
 
     datetime=0,
-    high=self.threeColumn,
-    low=self.threeColumn ,
-    open=self.threeColumn ,
-    close=self.threeColumn ,
+    high=threeColumn,
+    low=threeColumn ,
+    open=threeColumn ,
+    close=threeColumn ,
     volume=-1,
     openinterest=-1
 ) 
@@ -62,18 +76,18 @@ cerebro.adddata(data2, name="{val} 3-month growth".format(val=value))
 data3 = btfeeds.GenericCSVData(
     dataname="Data/{name}.csv".format(name=key),
 
-    fromdate=self.start,
-    todate=self.end,
-    timeframe=self.timeframe ,
+    fromdate=start,
+    todate=end,
+    timeframe=timeframe ,
     nullvalue=0.0,
 
-    dtformat=(self.dateFormat),
+    dtformat=(dateFormat),
 
     datetime=0,
-    high=self.twelveColumn,
-    low=self.twelveColumn,
-    open=self.twelveColumn,
-    close=self.twelveColumn,
+    high=twelveColumn,
+    low=twelveColumn,
+    open=twelveColumn,
+    close=twelveColumn,
     volume=-1,
     openinterest=-1
 )

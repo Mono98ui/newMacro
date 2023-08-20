@@ -23,6 +23,21 @@ class database:
         conn.commit()
         conn.close()
 
+    def insert_indicator(self):
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
+        cur = conn.cursor()
+        f = open("indicators.txt", "r")
+        lines = f.readlines()
+        for line in lines:
+            tabLink = line.split(":")#tableau
+            cur.execute(
+            sql.SQL("insert into {}(id, descr, inter, t_name) values (%s, %s, %s, %s)")
+                .format(sql.Identifier("t_indicators_fred")),
+            [tabLink[0].strip(), tabLink[1].strip(), tabLink[2].strip(), tabLink[3].strip()])
+
+        conn.commit()
+        conn.close()
+
     def insert_value_component(self, t_name, list_data):
         conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
@@ -49,11 +64,14 @@ class database:
         conn.commit()
         conn.close()
 
-    def fetch_links(self, columnName="", operator="=", columnVal=""):
+    def fetch_links(self, columnName="", operator="", columnVal=""):
         return self.fetch_table("t_links_inv", columnName, operator, columnVal)
     
-    def fetch_status(self, columnName="", operator="=", columnVal=""):
-        return self.fetch_table("t_status_scraper", columnName, operator, columnVal)
+    def fetch_indicators(self, columnName="", operator="", columnVal=""):
+        return self.fetch_table("t_indicators_fred", columnName, operator, columnVal)
+    
+    def fetch_status(self, columnName="", operator="", columnVal=""):
+        return self.fetch_table("t_status_process", columnName, operator, columnVal)
     
     #faire une sql builder pour pouvoir mettre beaucoup de condition
     def fetch_table(self, t_name, columnName, operator, columnVal):
@@ -71,7 +89,7 @@ class database:
         conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
         cur.execute(
-        sql.SQL("update t_status_scraper set status=%s where id=%s"),
+        sql.SQL("update t_status_process set status=%s where process_name=%s"),
         [status, id])
 
         conn.commit()

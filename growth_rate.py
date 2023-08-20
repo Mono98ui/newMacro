@@ -86,6 +86,7 @@ nbrScrapperOk = 0
     nbrScrapperOk = 0 """
 
 list_links = db.fetch_links("length(show_more)",">","2")
+indicators = db.fetch_indicators()
 #print(diff)
 db.update_status(1, 3)
 for link in list_links:
@@ -98,4 +99,6 @@ for link in list_links:
     print(results)
     db.insert_value_component_gr(link[4]+"_gr",results)
 
+for indicator in indicators:
+    print()
 db.update_status(1, 4)

@@ -112,7 +112,7 @@ def method_ShowMore_Newest(driver, info_link):
     return list_data
 
 db = database("MacroDB","Test_user","test")
-db.update_status(1, 1)
+db.update_status("process_investing", 1)
 info_links=db.fetch_links()
 driver = openWebBrowser()
 driver.maximize_window()
@@ -128,6 +128,6 @@ for info_link in info_links:
             db.insert_value_component(info_link[4].strip(), data)
         except:
             #Creer des logs
-            db.update_status(1, -1)
+            db.update_status("process_investing", -1)
 driver.quit()
-db.update_status(1, 2)
+db.update_status("process_investing", 2)

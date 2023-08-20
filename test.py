@@ -1,3 +1,5 @@
-from decimal import Decimal
+from database import database
 
-print(Decimal("0.2%".replace("%", "")))
+db = database("MacroDB","Test_user","test")
+db.insert_indicator()
+

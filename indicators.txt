@@ -1,30 +1,29 @@
-MYAGM1USM052S:M1 Money Stock
-MYAGM2USM052S:M2 Money Stock
-BOGZ1FL893169105Q:All Sectors; Commercial Paper; Liability
-BUSLOANS: Commercial and Industrial Loans
-TOTALSL:Total Consumer Credit Owned and Securitized Outstanding
-INDPRO:Industrial Production:Total Index
-NOCDFSA066MSFRBPHI:Current New Orders; Diffusion Index for Federal Reserve District 3:Philadelphia 
-PCE:Personal Consumption Expenditures
-PAYEMS:All Employees Total Nonfarm
-AWHMAN:Average Weekly Hours of Production and Nonsupervisory Employees Manufacturing
-USALOLITONOSTSAM:Leading Indicators OECD:Leading indicators:CLI:Normalised for the United States
-HOUST:New Privately-Owned Housing Units Started:Total Units
-PERMIT:New Privately-Owned Housing Units Authorized in Permit-Issuing Places:Total Units
-RETAIL:Retail Sales (Monthly)
-IC4WSA:4-Week Moving Average of Initial Claims
-HTRUCKSSA:Motor Vehicle Retail Sales:Heavy Weight Trucks
-BOGZ1FL145020011Q:Nonfinancial Business; Inventories (Excluding Farms)
-CPIAUCSL:Consumer Price Index for All Urban Consumers:All Items in U.S. City Average
-PPIACO:Producer Price Index by Commodity:All Commodities
-AHETPI:Average Hourly Earnings of Production and Nonsupervisory Employees Total Private
-DTWEXM:Trade Weighted U.S. Dollar Index:Major Currencies Goods
-NFORBRES:Net Free or Borrowed Reserves of Depository Institutions
-BOGNONBR:Non-Borrowed Reserves of Depository Institutions
-REQRESNS:Required Reserves of Depository Institution
-T10YFF:10-Year Treasury Constant Maturity Minus Federal Funds Rate
-DTB3:3-Month Treasury Bill:Secondary Market Rate
-FEDFUNDS:Effective Federal Funds Rate
-INTDSRUSM193N:Interest Rates Discount Rate for United States
-GACDFSA066MSFRBPHI: Current General Activity; Diffusion Index for Federal Reserve District 3:Philadelphia
-TB3MS:-Month Treasury Bill:Secondary Market Rate (1934)
+MYAGM1USM052S:M1 Money Stock:30:t_MYAGM1USM052S
+MYAGM2USM052S:M2 Money Stock:30:t_MYAGM2USM052S
+BOGZ1FL893169105Q:All Sectors; Commercial Paper; Liability:90:t_BOGZ1FL893169105Q
+BUSLOANS: Commercial and Industrial Loans:30:t_BUSLOANS
+TOTALSL:Total Consumer Credit Owned and Securitized Outstanding:30:t_TOTALSL
+INDPRO:Industrial Production-Total Index:30:t_INDPRO
+NOCDFSA066MSFRBPHI:Current New Orders; Diffusion Index for Federal Reserve District 3-Philadelphia:30:t_NOCDFSA066MSFRBPHI
+PCE:Personal Consumption Expenditures:30:t_PCE
+PAYEMS:All Employees Total Nonfarm:30:t_PAYEMS
+AWHMAN:Average Weekly Hours of Production and Nonsupervisory Employees Manufacturing:30:t_AWHMAN
+USALOLITONOSTSAM:Leading Indicators OECD-Leading indicators-CLI-Normalised for the United States:30:t_USALOLITONOSTSAM
+HOUST:New Privately-Owned Housing Units Started-Total Units:30:t_HOUST
+PERMIT:New Privately-Owned Housing Units Authorized in Permit-Issuing Places-Total Units:30:t_PERMIT
+IC4WSA:4-Week Moving Average of Initial Claims:7:t_IC4WSA
+HTRUCKSSA:Motor Vehicle Retail Sales-Heavy Weight Trucks:30:t_HTRUCKSSA
+BOGZ1FL145020011Q:Nonfinancial Business; Inventories (Excluding Farms):90:t_BOGZ1FL145020011Q
+CPIAUCSL:Consumer Price Index for All Urban Consumers-All Items in U.S. City Average:30:t_CPIAUCSL
+PPIACO:Producer Price Index by Commodity-All Commodities:30:t_PPIACO
+AHETPI:Average Hourly Earnings of Production and Nonsupervisory Employees Total Private:30:t_AHETPI
+DTWEXM:Trade Weighted U.S. Dollar Index-Major Currencies Goods:1:t_DTWEXM
+NFORBRES:Net Free or Borrowed Reserves of Depository Institutions:30:t_NFORBRES
+BOGNONBR:Non-Borrowed Reserves of Depository Institutions:30:t_BOGNONBR
+REQRESNS:Required Reserves of Depository Institution:30:t_REQRESNS
+T10YFF:10-Year Treasury Constant Maturity Minus Federal Funds Rate:1:t_T10YFF
+DTB3:3-Month Treasury Bill-Secondary Market Rate:1:t_DTB3
+FEDFUNDS:Effective Federal Funds Rate:30:t_FEDFUNDS
+INTDSRUSM193N:Interest Rates Discount Rate for United States:30:t_INTDSRUSM193N
+GACDFSA066MSFRBPHI: Current General Activity; Diffusion Index for Federal Reserve District 3-Philadelphia:30:t_GACDFSA066MSFRBPHI
+TB3MS:-Month Treasury Bill-Secondary Market Rate (1934):30:t_TB3MS

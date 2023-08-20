@@ -1,1 +1,1 @@
-insert into t_status_scraper(scraper_name, status) values('scraper_investing', 0)
+insert into t_status_process(process_name, status) values('process_fred', 0)
