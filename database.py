@@ -74,6 +74,17 @@ class database:
     def fetch_status(self, columnName="", operator="", columnVal=""):
         return self.fetch_table("t_status_process", columnName, operator, columnVal)
     
+    def fetch_table_show_gr(self, t_name, after=""):
+        afterSQL = sql.SQL(after)
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
+        cur = conn.cursor()
+        cur.execute(
+            sql.SQL("select t1.value, t2.value, t1.value > t2.value, t1.date from {} {}")
+                .format(sql.Identifier(t_name), afterSQL))
+        datas = cur.fetchall()
+        conn.close()
+        return datas
+    
     #faire une sql builder pour pouvoir mettre beaucoup de condition
     def fetch_table(self, t_name, columnName, operator, columnVal):
         where = sql.SQL("where {}{}{}").format(sql.SQL(columnName), sql.SQL(operator), sql.Literal(columnVal)) if columnName and columnVal else sql.SQL("")

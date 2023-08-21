@@ -1,0 +1,130 @@
+from database import database
+import re
+import numpy as np
+import pandas as pd
+from email.message import EmailMessage
+from email import encoders
+import ssl
+import smtplib
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import time
+
+def organizeDataPerModule(t_name, datas, results):
+    money_credit = "^T_(MYAGM1USM052S|MYAGM2USM052S|BOGZ1FL893169105Q|BUSLOANS|TOTALSL)".lower()
+    econo = ("^T_(INDPRO|NOCDFSA066MSFRBPHI|PCE|PAYEMS|AWHMAN|USALOLITONOSTSAM|HOUST|PERMIT|RETAIL"
++"|IC4WSA|GACDFSA066MSFRBPHI|HTRUCKSSA|TCU|BOGZ1FL145020011Q)"
++"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85").lower()
+    inflation = "^T_(CPIAUCSL|PPIACO|AHETPI)".lower()
+    fed_pol= "^T_(NFORBRES|BOGNONBR|REQRESNS|T10YFF|DTB3|FEDFUNDS|INTDSRUSM193N)".lower()
+
+    moneyCreditGrowth= "MoneyCreditGrowth"
+    economicGrowth="EconomicGrowth"
+    inflationTxt = "Inflation"
+    fedPolicy= "Fed Policy"
+
+    if re.search(money_credit,t_name):
+        datas[0] = (moneyCreditGrowth,)+datas[0]
+        results[0].append(datas[0])
+
+    elif re.search(econo,t_name,):
+        datas[0] = (economicGrowth,)+datas[0]
+        results[1].append(datas[0])
+
+    elif re.search(inflation,t_name):
+        datas[0] = (inflationTxt,)+datas[0]
+        results[2].append(datas[0])
+
+    elif re.search(fed_pol,t_name):
+        datas[0] = (fedPolicy,)+datas[0]
+        results[3].append(datas[0])
+    else:
+         print("Not Catagorize: "+t_name)
+
+    return results
+
+def sendEmail(email_sender,email_receiver,filename):
+    pwd = "nucgpfaiqqnhypmw"
+
+    subject =" Growth Rate Report"
+
+    message = """
+    Good morning,\n
+    This is the growth rate report.\n
+    Have a nice day\n
+    macroBot.
+    """
+
+    em = MIMEMultipart()
+
+    em['From'] = email_sender
+    em['To'] = email_receiver
+    em['Subject'] = subject
+
+    # Open PDF file in binary mode
+    with open(filename, "rb") as attachment:
+        # Add file as application/octet-stream
+        # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
+
+    # Add header as key/value pair to attachment part
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+    # Add attachment to message and convert message to string
+    em.attach(part)
+
+
+    em.attach(MIMEText(message, "plain"))
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+        smtp.login(email_sender, pwd)
+        smtp.sendmail(email_sender,email_receiver, em.as_string())
+
+db = database("MacroDB","Test_user","test")
+list_links = db.fetch_links("length(show_more)",">","2")
+indicators = db.fetch_indicators()
+results=([], [], [], [])
+
+for link in list_links:
+    datas = db.fetch_table_show_gr(link[4]+"_gr","t1"
++" inner join " +link[4]+"_gr"+ " t2"
++" on t1.date = t2.date and t2.intervalmonth = 12"
++" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
++" order by t1.date desc"
++" limit 1")
+    results = organizeDataPerModule(link[4].lower(), datas, results)
+
+for indicator in indicators:
+    datas = db.fetch_table_show_gr(indicator[3].lower()+"_gr","t1"
++" inner join " +indicator[3].lower()+"_gr"+ " t2"
++" on t1.date = t2.date and t2.intervalmonth = 12"
++" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
++" order by t1.date desc"
++" limit 1")
+    results = organizeDataPerModule(indicator[3].lower(), datas, results)
+
+mainDf = []
+for result in results:
+    #print(result)
+    my_array = np.array(result)
+
+    df = pd.DataFrame(my_array, columns = ['Indicator','3 Month Ann.','12 Month Ann.', 'Has crossover', 'Date'],)
+
+    mainDf.append(df)
+
+pd.concat(mainDf, ignore_index=True).to_csv("./reportGrowthrate.csv")
+
+sendEmail("macrobot165@gmail.com","phamkhapanda@gmail.com","reportGrowthrate.csv")
+
+db.update_status("process_investing", 0)
+db.update_status("process_fred", 0)

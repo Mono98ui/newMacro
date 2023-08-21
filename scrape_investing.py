@@ -53,7 +53,7 @@ def method_ShowMore(driver, info_link):
 
     soup = BeautifulSoup(page, "html.parser")
 
-    for iter in soup.tbody.find_all("tr"):
+    for iter in reversed(soup.tbody.find_all("tr")):
         value = -1000.00 #valeur initial arbitraire
         timestamp =  datetime.strptime(iter["event_timestamp"], '%Y-%m-%d %H:%M:%S')
         #fix les donnees
@@ -112,7 +112,7 @@ def method_ShowMore_Newest(driver, info_link):
     return list_data
 
 db = database("MacroDB","Test_user","test")
-#db.update_status("process_investing", 1)
+db.update_status("process_investing", 1)
 info_links=db.fetch_links()
 driver = openWebBrowser()
 driver.maximize_window()
@@ -121,13 +121,11 @@ for info_link in info_links:
     #if showMore is not empty
     if info_link[2]:
         try:
-            #data = method_ShowMore(driver,info_link)
-            data = method_ShowMore_Newest(driver,info_link)
-            print(data)
-            print(info_link[4])
+            data = method_ShowMore(driver,info_link)
+            #data = method_ShowMore_Newest(driver,info_link)
             db.insert_value_component(info_link[4].strip(), data)
         except:
             #Creer des logs
             db.update_status("process_investing", -1)
 driver.quit()
-#db.update_status("process_investing", 2)
+db.update_status("process_investing", 2)

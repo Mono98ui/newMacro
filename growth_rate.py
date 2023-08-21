@@ -79,43 +79,26 @@ db = database("MacroDB","Test_user","test")
 isScraperNormal= False
 nbrScrapperOk = 0
 
-#Locking mechanism
-""" while(not isScraperNormal):
-    time.sleep(60)
-    scrapers = db.fetch_status()
-    for scraper in scrapers:
-        if scraper[2] == 2:
-            nbrScrapperOk+=1
-        elif scraper[2] == -1:
-            print("Something went wrong to the scrapper: code 2")
-            exit()
-    if nbrScrapperOk == len(scrapers):
-        isScraperNormal = True
-    nbrScrapperOk = 0 """
-
 list_links = db.fetch_links("length(show_more)",">","2")
 indicators = db.fetch_indicators()
-#print(diff)
-#db.update_status("process_investing", 3)
+db.update_status("process_investing", 3)
 
 for link in list_links:
     datas = db.fetch_table(link[4],"","", "")
     results = computethreemonth(datas, link[3])
-    #print(results)
     db.insert_value_component_gr(link[4]+"_gr",results)
-    print("==========================")
     results = computetwelvemonth(datas, link[3])
-    print(results)
     db.insert_value_component_gr(link[4]+"_gr",results)
 
-#db.update_status("process_investing", 4)
+db.update_status("process_investing", 4)
+
+db.update_status("process_fred", 3)
 
 for indicator in indicators:
     datas = db.fetch_table(indicator[3].lower(),"","", "")
     results = computethreemonth(datas, indicator[2])
-    print(results)
     db.insert_value_component_gr(indicator[3].lower()+"_gr",results)
-    print("==========================")
     results = computetwelvemonth(datas, indicator[2])
-    print(results)
     db.insert_value_component_gr(indicator[3].lower()+"_gr",results)
+
+db.update_status("process_fred", 4)
