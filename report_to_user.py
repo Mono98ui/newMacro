@@ -23,21 +23,22 @@ def organizeDataPerModule(t_name, datas, results):
     economicGrowth="EconomicGrowth"
     inflationTxt = "Inflation"
     fedPolicy= "Fed Policy"
+    nameIndicator = t_name.replace("t_","")
 
     if re.search(money_credit,t_name):
-        datas[0] = (moneyCreditGrowth,)+datas[0]
+        datas[0] = (moneyCreditGrowth,nameIndicator)+datas[0]
         results[0].append(datas[0])
 
     elif re.search(econo,t_name,):
-        datas[0] = (economicGrowth,)+datas[0]
+        datas[0] = (economicGrowth,nameIndicator)+datas[0]
         results[1].append(datas[0])
 
     elif re.search(inflation,t_name):
-        datas[0] = (inflationTxt,)+datas[0]
+        datas[0] = (inflationTxt,nameIndicator)+datas[0]
         results[2].append(datas[0])
 
     elif re.search(fed_pol,t_name):
-        datas[0] = (fedPolicy,)+datas[0]
+        datas[0] = (fedPolicy,nameIndicator)+datas[0]
         results[3].append(datas[0])
     else:
          print("Not Catagorize: "+t_name)
@@ -118,7 +119,7 @@ for result in results:
     #print(result)
     my_array = np.array(result)
 
-    df = pd.DataFrame(my_array, columns = ['Indicator','3 Month Ann.','12 Month Ann.', 'Has crossover', 'Date'],)
+    df = pd.DataFrame(my_array, columns = ['Module','Indicator','3 Month Ann.','12 Month Ann.', 'Has crossover', 'Date'],)
 
     mainDf.append(df)
 
