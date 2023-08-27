@@ -11,6 +11,14 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import time
 
+#
+#Param:
+#t_name: table name
+#datas: growth rate of the table
+#results: tuple of table
+#This function organize the datas into their modules
+#return: results
+#
 def organizeDataPerModule(t_name, datas, results):
     money_credit = "^T_(MYAGM1USM052S|MYAGM2USM052S|BOGZ1FL893169105Q|BUSLOANS|TOTALSL)".lower()
     econo = ("^T_(INDPRO|NOCDFSA066MSFRBPHI|PCE|PAYEMS|AWHMAN|USALOLITONOSTSAM|HOUST|PERMIT|RETAIL"
@@ -44,7 +52,14 @@ def organizeDataPerModule(t_name, datas, results):
          print("Not Catagorize: "+t_name)
 
     return results
-
+#
+#Param:
+#email_sender: emails of the bot email
+#email_receiver: emails of the receiver
+#filename: the filename of the growth rate report
+#This function send the emails to the email_receiver
+#return: results
+#
 def sendEmail(email_sender,email_receiver,filename):
     pwd = "nucgpfaiqqnhypmw"
 
@@ -96,6 +111,7 @@ list_links = db.fetch_links("length(show_more)",">","2")
 indicators = db.fetch_indicators()
 results=([], [], [], [])
 
+#Organise the growth rate for investing
 for link in list_links:
     datas = db.fetch_table_show_gr(link[4]+"_gr","t1"
 +" inner join " +link[4]+"_gr"+ " t2"
@@ -105,6 +121,7 @@ for link in list_links:
 +" limit 1")
     results = organizeDataPerModule(link[4].lower(), datas, results)
 
+#Organise the growth rate for fred
 for indicator in indicators:
     datas = db.fetch_table_show_gr(indicator[3].lower()+"_gr","t1"
 +" inner join " +indicator[3].lower()+"_gr"+ " t2"
@@ -115,14 +132,16 @@ for indicator in indicators:
     results = organizeDataPerModule(indicator[3].lower(), datas, results)
 
 mainDf = []
+#Concatenate the data into one dataframe
 for result in results:
-    #print(result)
+
     my_array = np.array(result)
 
     df = pd.DataFrame(my_array, columns = ['Module','Indicator','3 Month Ann.','12 Month Ann.', 'Has crossover', 'Date'],)
 
     mainDf.append(df)
 
+#Create the csv
 pd.concat(mainDf, ignore_index=True).to_csv("./reportGrowthrate.csv")
 
 sendEmail("macrobot165@gmail.com","phamkhapanda@gmail.com","reportGrowthrate.csv")

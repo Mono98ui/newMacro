@@ -8,6 +8,7 @@ db = database("MacroDB","Test_user","test")
 db.update_status("process_fred", 1)
 indicators = db.fetch_indicators()
 
+#Scrape the data from fred and stor it in the database
 for indicator in indicators:
     list_datas = []
     try:

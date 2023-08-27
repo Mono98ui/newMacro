@@ -2,7 +2,12 @@ from database import database
 import time
 
 
-
+#Param:
+#datas: data's form indicators
+#diff: interval of days of data's update
+#This function compute the three month growthrate
+#Return: the growth rate
+#
 def computethreemonth(datas, diff):
 
     results = []
@@ -37,7 +42,12 @@ def computethreemonth(datas, diff):
         results.append({"timestamp":datas[i][0],"value":growth,"intervalMonth":3 })
         
     return results
-
+#Param:
+#datas: data's form indicators
+#diff: interval of days of data's update
+#This function compute the twelve month growthrate
+#Return: the growth rate
+#
 def computetwelvemonth(datas, diff):
 
     results = []
@@ -70,19 +80,13 @@ def computetwelvemonth(datas, diff):
 
     return results
 
-def formatrule(nbr, results):
-    for i in range(nbr):
-        results.insert(i, None)
-
 db = database("MacroDB","Test_user","test")
-
-isScraperNormal= False
-nbrScrapperOk = 0
 
 list_links = db.fetch_links("length(show_more)",">","2")
 indicators = db.fetch_indicators()
 db.update_status("process_investing", 3)
 
+#Calculate growth rate data from investing.com
 for link in list_links:
     datas = db.fetch_table(link[4],"","", "")
     results = computethreemonth(datas, link[3])
@@ -94,6 +98,7 @@ db.update_status("process_investing", 4)
 
 db.update_status("process_fred", 3)
 
+#Calculate growth rate data from Fred
 for indicator in indicators:
     datas = db.fetch_table(indicator[3].lower(),"","", "")
     results = computethreemonth(datas, indicator[2])

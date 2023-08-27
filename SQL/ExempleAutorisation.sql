@@ -1,3 +1,5 @@
+
+--Autorisation of user into the database
 REVOKE ALL ON DATABASE "MacroDB" FROM public;  
 GRANT CONNECT ON DATABASE "MacroDB" TO "Test_autorization_group";
 
