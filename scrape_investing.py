@@ -110,7 +110,7 @@ def method_ShowMore(driver, info_link):
             data = format_data_db(timestamp, value)
             list_data.append(data)
         
-        #Optimize de code to only calculate everything containing percent
+        #Optimize de code to only extract every data containing percent
         if onlyNewestdata:
             onlyNewestdata = False
             continue
