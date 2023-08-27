@@ -66,6 +66,7 @@ def method_ShowMore(driver, info_link):
     tableName=info_link[4].strip()
     compter = 0
     list_data = []
+    onlyNewestdata = False
     #fix
     compter_fix = 0;
     
@@ -100,12 +101,19 @@ def method_ShowMore(driver, info_link):
             index = value
         elif "M" in textValue:
             value = removeNotations(textValue)
+            onlyNewestdata = True
         elif textValue.strip():
             value = float(textValue)
+            onlyNewestdata = True
 
         if textValue.strip():
             data = format_data_db(timestamp, value)
             list_data.append(data)
+        
+        #Optimize de code to only calculate everything containing percent
+        if onlyNewestdata:
+            onlyNewestdata = False
+            continue
         
     return list_data
 
