@@ -113,7 +113,7 @@ def method_ShowMore(driver, info_link):
         #Optimize de code to only extract every data containing percent
         if onlyNewestdata:
             onlyNewestdata = False
-            continue
+            break
         
     return list_data
 

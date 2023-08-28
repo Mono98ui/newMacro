@@ -144,7 +144,7 @@ for result in results:
 #Create the csv
 pd.concat(mainDf, ignore_index=True).to_csv("./reportGrowthrate.csv")
 
-sendEmail("macrobot165@gmail.com","phamkhapanda@gmail.com","reportGrowthrate.csv")
+sendEmail("macrobot165@gmail.com","Jdannypham@gmail.com","reportGrowthrate.csv")
 
 db.update_status("process_investing", 0)
 db.update_status("process_fred", 0)
