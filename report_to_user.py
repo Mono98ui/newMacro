@@ -14,13 +14,14 @@ import time
 #
 #Param:
 #t_name: table name
+#desc:description of the table
 #datas: growth rate of the table
 #results: tuple of table
 #This function organize the datas into their modules
 #return: results
 #
-def organizeDataPerModule(t_name, datas, results):
-    money_credit = "^T_(MYAGM1USM052S|MYAGM2USM052S|BOGZ1FL893169105Q|BUSLOANS|TOTALSL)".lower()
+def organizeDataPerModule(t_name, desc ,datas, results):
+    money_credit = "^T_(M1SL|M2SL|BOGZ1FL893169105Q|BUSLOANS|TOTALSL)".lower()
     econo = ("^T_(INDPRO|NOCDFSA066MSFRBPHI|PCE|PAYEMS|AWHMAN|USALOLITONOSTSAM|HOUST|PERMIT|RETAIL"
 +"|IC4WSA|GACDFSA066MSFRBPHI|HTRUCKSSA|TCU|BOGZ1FL145020011Q)"
 +"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85").lower()
@@ -34,19 +35,19 @@ def organizeDataPerModule(t_name, datas, results):
     nameIndicator = t_name.replace("t_","")
 
     if re.search(money_credit,t_name):
-        datas[0] = (moneyCreditGrowth,nameIndicator)+datas[0]
+        datas[0] = (moneyCreditGrowth,nameIndicator, desc)+datas[0]
         results[0].append(datas[0])
 
     elif re.search(econo,t_name,):
-        datas[0] = (economicGrowth,nameIndicator)+datas[0]
+        datas[0] = (economicGrowth,nameIndicator, desc)+datas[0]
         results[1].append(datas[0])
 
     elif re.search(inflation,t_name):
-        datas[0] = (inflationTxt,nameIndicator)+datas[0]
+        datas[0] = (inflationTxt,nameIndicator, desc)+datas[0]
         results[2].append(datas[0])
 
     elif re.search(fed_pol,t_name):
-        datas[0] = (fedPolicy,nameIndicator)+datas[0]
+        datas[0] = (fedPolicy,nameIndicator, desc)+datas[0]
         results[3].append(datas[0])
     else:
          print("Not Catagorize: "+t_name)
@@ -119,7 +120,7 @@ for link in list_links:
 +" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
 +" order by t1.date desc"
 +" limit 1")
-    results = organizeDataPerModule(link[4].lower(), datas, results)
+    results = organizeDataPerModule(link[4].lower(),link[5] ,datas, results)
 
 #Organise the growth rate for fred
 for indicator in indicators:
@@ -129,7 +130,7 @@ for indicator in indicators:
 +" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
 +" order by t1.date desc"
 +" limit 1")
-    results = organizeDataPerModule(indicator[3].lower(), datas, results)
+    results = organizeDataPerModule(indicator[3].lower(), indicator[1], datas, results)
 
 mainDf = []
 #Concatenate the data into one dataframe
@@ -137,7 +138,7 @@ for result in results:
 
     my_array = np.array(result)
 
-    df = pd.DataFrame(my_array, columns = ['Module','Indicator','3 Month Ann.','12 Month Ann.', 'Has crossover', 'Date'],)
+    df = pd.DataFrame(my_array, columns = ['Module','Indicator','Description','3 Month Ann.','12 Month Ann.', 'Has crossover', 'Date'],)
 
     mainDf.append(df)
 

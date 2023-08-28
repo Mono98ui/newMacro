@@ -28,9 +28,9 @@ class database:
         for line in lines:
             tabLink = line.split(";")#tableau
             cur.execute(
-            sql.SQL("insert into {}(links, show_more, inter, t_name) values (%s, %s, %s, %s)")
+            sql.SQL("insert into {}(links, show_more, inter, t_name, descr) values (%s, %s, %s, %s, %s)")
                 .format(sql.Identifier("t_links_inv")),
-            [tabLink[0].strip(), tabLink[1].strip(), tabLink[2], tabLink[3].strip()])
+            [tabLink[0].strip(), tabLink[1].strip(), tabLink[2], tabLink[3].strip(), tabLink[4].strip()])
 
         conn.commit()
         conn.close()

@@ -16,8 +16,8 @@ drop table if exists t_total_vehicle_sales_85_gr;
 
 
 --Supprimer Data of FRED
-drop table if exists t_MYAGM1USM052S;
-drop table if exists t_MYAGM2USM052S;
+drop table if exists t_M1SL;
+drop table if exists t_M2SL;
 drop table if exists t_BOGZ1FL893169105Q;
 drop table if exists t_BUSLOANS;
 drop table if exists t_TOTALSL;
@@ -46,8 +46,8 @@ drop table if exists t_INTDSRUSM193N;
 drop table if exists t_GACDFSA066MSFRBPHI;
 drop table if exists t_TB3MS;
 
-drop table if exists t_MYAGM1USM052S_gr;
-drop table if exists t_MYAGM2USM052S_gr;
+drop table if exists t_M1SL_gr;
+drop table if exists t_M2SL_gr;
 drop table if exists t_BOGZ1FL893169105Q_gr;
 drop table if exists t_BUSLOANS_gr;
 drop table if exists t_TOTALSL_gr;
@@ -91,7 +91,8 @@ CREATE TABLE t_links_inv (
 	links varchar(500) NOT NULL,
 	show_more varchar(50) NOT NULL,
 	inter integer NOT NULL,
-	t_name varchar(50)
+	t_name varchar(50),
+	descr varchar(500) NOT NULL
 );
 CREATE TABLE t_indicators_fred (
 	id varchar(100) PRIMARY KEY,
@@ -159,11 +160,11 @@ CREATE TABLE t_total_vehicle_sales_85_gr (
 
 
 --Creer FRED Raw data
-CREATE TABLE t_MYAGM1USM052S (
+CREATE TABLE t_M1SL (
 	date timestamp NOT NULL UNIQUE,
 	value float NOT NULL
 );
-CREATE TABLE t_MYAGM2USM052S (
+CREATE TABLE t_M2SL (
 	date timestamp NOT NULL UNIQUE,
 	value float NOT NULL
 );
@@ -278,14 +279,14 @@ CREATE TABLE t_TB3MS (
 
 
 --Creer FRED growth rate
-CREATE TABLE t_MYAGM1USM052S_gr (
+CREATE TABLE t_M1SL_gr (
 	date timestamp NOT NULL,
 	value float,
 	intervalMonth integer NOT null ,
 	PRIMARY KEY(date, intervalMonth)
 );
 
-CREATE TABLE t_MYAGM2USM052S_gr (
+CREATE TABLE t_M2SL_gr (
 	date timestamp NOT NULL,
 	value float,
 	intervalMonth integer NOT null,

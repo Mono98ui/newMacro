@@ -1,8 +1,8 @@
-https://ca.investing.com/economic-calendar/us-leading-index-1968;showMoreHistory1968;30;t_us_leading_index_1968
-https://ca.investing.com/economic-calendar/building-permits-25;showMoreHistory25;30;t_building_permits_25
-https://ca.investing.com/economic-calendar/chicago-pmi-38;showMoreHistory38;30;t_chicago_pmi_38
-https://ca.investing.com/economic-calendar/total-vehicle-sales-85;showMoreHistory85;30;t_total_vehicle_sales_85
-https://ca.investing.com/commodities/copper-historical-data;;1;
-https://ca.investing.com/indices/s-p-goldman-sachs-commodity-index-historical-data;;1;
-https://ca.investing.com/commodities/silver-historical-data;;1;
-https://ca.investing.com/indices/usdollar-historical-data;;1;
+https://ca.investing.com/economic-calendar/us-leading-index-1968;showMoreHistory1968;30;t_us_leading_index_1968;Index of leading economic indicators (Monthly)
+https://ca.investing.com/economic-calendar/building-permits-25;showMoreHistory25;30;t_building_permits_25;Housing Permits (Monthly)
+https://ca.investing.com/economic-calendar/chicago-pmi-38;showMoreHistory38;30;t_chicago_pmi_38;Chicago PMI (Monthly)
+https://ca.investing.com/economic-calendar/total-vehicle-sales-85;showMoreHistory85;30;t_total_vehicle_sales_85;Auto Sales (Monthly)
+https://ca.investing.com/commodities/copper-historical-data;;1;;
+https://ca.investing.com/indices/s-p-goldman-sachs-commodity-index-historical-data;;1;;
+https://ca.investing.com/commodities/silver-historical-data;;1;;
+https://ca.investing.com/indices/usdollar-historical-data;;1;;

@@ -24,5 +24,5 @@ for indicator in indicators:
             })
         db.insert_value_component(indicator[3].strip().lower(), list_datas)
     except:
-        db.update_status("process_investing", -1)
+        db.update_status("process_fred", -1)
 db.update_status("process_fred", 2)

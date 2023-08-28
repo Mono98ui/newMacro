@@ -68,8 +68,8 @@ def method_ShowMore(driver, info_link):
     list_data = []
     onlyNewestdata = False
     #fix
-    compter_fix = 0;
-    
+    compter_fix = 0
+
     while( compter < 42 and showMore.is_displayed() and showMore.is_enabled()):
         showMore.click()
         compter+=1
@@ -101,19 +101,13 @@ def method_ShowMore(driver, info_link):
             index = value
         elif "M" in textValue:
             value = removeNotations(textValue)
-            onlyNewestdata = True
         elif textValue.strip():
             value = float(textValue)
-            onlyNewestdata = True
 
         if textValue.strip():
             data = format_data_db(timestamp, value)
             list_data.append(data)
         
-        #Optimize de code to only extract every data containing percent
-        if onlyNewestdata:
-            onlyNewestdata = False
-            break
         
     return list_data
 

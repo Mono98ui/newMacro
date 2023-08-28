@@ -1,5 +1,5 @@
-MYAGM1USM052S:M1 Money Stock:30:t_MYAGM1USM052S
-MYAGM2USM052S:M2 Money Stock:30:t_MYAGM2USM052S
+M1SL:M1 Money Stock:30:t_M1SL
+M2SL:M2 Money Stock:30:t_M2SL
 BOGZ1FL893169105Q:All Sectors; Commercial Paper; Liability:90:t_BOGZ1FL893169105Q
 BUSLOANS: Commercial and Industrial Loans:30:t_BUSLOANS
 TOTALSL:Total Consumer Credit Owned and Securitized Outstanding:30:t_TOTALSL
