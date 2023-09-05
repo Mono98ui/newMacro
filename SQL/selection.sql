@@ -9,6 +9,8 @@ select * from t_chicago_pmi_38_gr;
 select * from t_total_vehicle_sales_85;
 select * from t_total_vehicle_sales_85_gr;
 
+select round(10.23::numeric, 2);
+
 select * from t_indicators_fred;
 select * from t_busloans order by date desc;
 select * from t_m2sl order by date desc;

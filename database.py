@@ -27,10 +27,11 @@ class database:
         lines = f.readlines()
         for line in lines:
             tabLink = line.split(";")#tableau
+            print(tabLink[5])
             cur.execute(
-            sql.SQL("insert into {}(links, show_more, inter, t_name, descr) values (%s, %s, %s, %s, %s)")
+            sql.SQL("insert into {}(links, show_more, inter, t_name, descr, is_oscillator) values (%s, %s, %s, %s, %s, %s)")
                 .format(sql.Identifier("t_links_inv")),
-            [tabLink[0].strip(), tabLink[1].strip(), tabLink[2], tabLink[3].strip(), tabLink[4].strip()])
+            [tabLink[0].strip(), tabLink[1].strip(), tabLink[2], tabLink[3].strip(), tabLink[4].strip(), tabLink[5]])
 
         conn.commit()
         conn.close()
@@ -46,9 +47,9 @@ class database:
         for line in lines:
             tabLink = line.split(":")#tableau
             cur.execute(
-            sql.SQL("insert into {}(id, descr, inter, t_name) values (%s, %s, %s, %s)")
+            sql.SQL("insert into {}(id, descr, inter, t_name, is_oscillator) values (%s, %s, %s, %s, %s)")
                 .format(sql.Identifier("t_indicators_fred")),
-            [tabLink[0].strip(), tabLink[1].strip(), tabLink[2].strip(), tabLink[3].strip()])
+            [tabLink[0].strip(), tabLink[1].strip(), tabLink[2].strip(), tabLink[3].strip(), tabLink[4]])
 
         conn.commit()
         conn.close()
@@ -128,7 +129,7 @@ class database:
         conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
         cur.execute(
-            sql.SQL("select t1.value, t2.value, t1.value > t2.value, t1.date from {} {}")
+            sql.SQL("select round(t1.value::numeric, 2), round(t2.value::numeric, 2), t1.value > t2.value, t1.date from {} {}")
                 .format(sql.Identifier(t_name), afterSQL))
         datas = cur.fetchall()
         conn.close()

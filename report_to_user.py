@@ -15,16 +15,17 @@ import time
 #Param:
 #t_name: table name
 #desc:description of the table
+#isOsc: is it an oscillator
 #datas: growth rate of the table
 #results: tuple of table
 #This function organize the datas into their modules
 #return: results
 #
-def organizeDataPerModule(t_name, desc ,datas, results):
+def organizeDataPerModule(t_name, desc, isOsc ,datas, results):
     money_credit = "^T_(M1SL|M2SL|BOGZ1FL893169105Q|BUSLOANS|TOTALSL)".lower()
     econo = ("^T_(INDPRO|NOCDFSA066MSFRBPHI|PCE|PAYEMS|AWHMAN|USALOLITONOSTSAM|HOUST|PERMIT|RETAIL"
-+"|IC4WSA|GACDFSA066MSFRBPHI|HTRUCKSSA|TCU|BOGZ1FL145020011Q)"
-+"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85").lower()
++"|IC4WSA|GACDFSA066MSFRBPHI|HTRUCKSSA|BOGZ1FL145020011Q)"
++"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85|t_ism_manufacturing_pmi_173").lower()
     inflation = "^T_(CPIAUCSL|PPIACO|AHETPI)".lower()
     fed_pol= "^T_(NFORBRES|BOGNONBR|REQRESNS|T10YFF|DTB3|FEDFUNDS|INTDSRUSM193N)".lower()
 
@@ -34,11 +35,16 @@ def organizeDataPerModule(t_name, desc ,datas, results):
     fedPolicy= "Fed Policy"
     nameIndicator = t_name.replace("t_","")
 
+    if isOsc:
+        datas[0] = ("None", datas[0][1], datas[0][2], datas[0][3])
+
     if re.search(money_credit,t_name):
         datas[0] = (moneyCreditGrowth,nameIndicator, desc)+datas[0]
         results[0].append(datas[0])
 
-    elif re.search(econo,t_name,):
+    elif re.search(econo,t_name):
+        print(t_name)
+        print(datas)
         datas[0] = (economicGrowth,nameIndicator, desc)+datas[0]
         results[1].append(datas[0])
 
@@ -120,7 +126,7 @@ for link in list_links:
 +" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
 +" order by t1.date desc"
 +" limit 1")
-    results = organizeDataPerModule(link[4].lower(),link[5] ,datas, results)
+    results = organizeDataPerModule(link[4].lower(),link[5], link[6] ,datas, results)
 
 #Organise the growth rate for fred
 for indicator in indicators:
@@ -130,7 +136,7 @@ for indicator in indicators:
 +" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
 +" order by t1.date desc"
 +" limit 1")
-    results = organizeDataPerModule(indicator[3].lower(), indicator[1], datas, results)
+    results = organizeDataPerModule(indicator[3].lower(), indicator[1], indicator[4], datas, results)
 
 mainDf = []
 #Concatenate the data into one dataframe
@@ -138,7 +144,7 @@ for result in results:
 
     my_array = np.array(result)
 
-    df = pd.DataFrame(my_array, columns = ['Module','Indicator','Description','3 Month Ann.','12 Month Ann.', 'Has crossover', 'Date'],)
+    df = pd.DataFrame(my_array, columns = ['Module','Indicator','Description','3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Negatif', 'Date'],)
 
     mainDf.append(df)
 

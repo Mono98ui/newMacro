@@ -1,29 +1,24 @@
-M1SL:M1 Money Stock:30:t_M1SL
-M2SL:M2 Money Stock:30:t_M2SL
-BOGZ1FL893169105Q:All Sectors; Commercial Paper; Liability:90:t_BOGZ1FL893169105Q
-BUSLOANS: Commercial and Industrial Loans:30:t_BUSLOANS
-TOTALSL:Total Consumer Credit Owned and Securitized Outstanding:30:t_TOTALSL
-INDPRO:Industrial Production-Total Index:30:t_INDPRO
-NOCDFSA066MSFRBPHI:Current New Orders; Diffusion Index for Federal Reserve District 3-Philadelphia:30:t_NOCDFSA066MSFRBPHI
-PCE:Personal Consumption Expenditures:30:t_PCE
-PAYEMS:All Employees Total Nonfarm:30:t_PAYEMS
-AWHMAN:Average Weekly Hours of Production and Nonsupervisory Employees Manufacturing:30:t_AWHMAN
-USALOLITONOSTSAM:Leading Indicators OECD-Leading indicators-CLI-Normalised for the United States:30:t_USALOLITONOSTSAM
-HOUST:New Privately-Owned Housing Units Started-Total Units:30:t_HOUST
-PERMIT:New Privately-Owned Housing Units Authorized in Permit-Issuing Places-Total Units:30:t_PERMIT
-IC4WSA:4-Week Moving Average of Initial Claims:7:t_IC4WSA
-HTRUCKSSA:Motor Vehicle Retail Sales-Heavy Weight Trucks:30:t_HTRUCKSSA
-BOGZ1FL145020011Q:Nonfinancial Business; Inventories (Excluding Farms):90:t_BOGZ1FL145020011Q
-CPIAUCSL:Consumer Price Index for All Urban Consumers-All Items in U.S. City Average:30:t_CPIAUCSL
-PPIACO:Producer Price Index by Commodity-All Commodities:30:t_PPIACO
-AHETPI:Average Hourly Earnings of Production and Nonsupervisory Employees Total Private:30:t_AHETPI
-DTWEXM:Trade Weighted U.S. Dollar Index-Major Currencies Goods:1:t_DTWEXM
-NFORBRES:Net Free or Borrowed Reserves of Depository Institutions:30:t_NFORBRES
-BOGNONBR:Non-Borrowed Reserves of Depository Institutions:30:t_BOGNONBR
-REQRESNS:Required Reserves of Depository Institution:30:t_REQRESNS
-T10YFF:10-Year Treasury Constant Maturity Minus Federal Funds Rate:1:t_T10YFF
-DTB3:3-Month Treasury Bill-Secondary Market Rate:1:t_DTB3
-FEDFUNDS:Effective Federal Funds Rate:30:t_FEDFUNDS
-INTDSRUSM193N:Interest Rates Discount Rate for United States:30:t_INTDSRUSM193N
-GACDFSA066MSFRBPHI: Current General Activity; Diffusion Index for Federal Reserve District 3-Philadelphia:30:t_GACDFSA066MSFRBPHI
-TB3MS:-Month Treasury Bill-Secondary Market Rate (1934):30:t_TB3MS
+M1SL:M1 (Monthly):30:t_M1SL:0
+M2SL:M2 (Monthly):30:t_M2SL:0
+BOGZ1FL893169105Q:Commercial paper outstanding (Quarterly):90:t_BOGZ1FL893169105Q:0
+BUSLOANS:Commercial and industrial loans at banks (Monthly):30:t_BUSLOANS:0
+TOTALSL:Consumer instalment credit (Monthly):30:t_TOTALSL:0
+INDPRO:Industrial Production (Monthly):30:t_INDPRO:0
+PCE:Personal Consumption Expenditures (Monthly):30:t_PCE:0
+PAYEMS:Employment (Monthly):30:t_PAYEMS:0
+AWHMAN:Average work week (Monthly):30:t_AWHMAN:0
+USALOLITONOSTSAM:LEI Conference Board (Monthly):30:t_USALOLITONOSTSAM:0
+HOUST:Housing Starts (Monthly):30:t_HOUST:0
+PERMIT:Housing Permits (Monthly):30:t_PERMIT:0
+IC4WSA:Average weekly initial claims for unemployment (Weekly):7:t_IC4WSA:0
+BOGZ1FL145020011Q:Inventories Level, (Excluding Farms),  (Quarterly):90:t_BOGZ1FL145020011Q:0
+CPIAUCSL:Consumer price index- all items (Monthly):30:t_CPIAUCSL:0
+PPIACO:Producer price index-all items (Monthly):30:t_PPIACO:0
+AHETPI:Average hourly earnings (Monthly):30:t_AHETPI:0
+DTWEXM:Trade Weighted U.S. Dollar Index-Major Currencies Goods:1:t_DTWEXM:0
+T10YFF:Yield Curve (Daily):1:t_T10YFF:0
+DTB3:T-bill rate (Daily):1:t_DTB3:0
+FEDFUNDS:Fed funds rate (Monthly):30:t_FEDFUNDS:0
+GACDFSA066MSFRBPHI: Philly Fed PMI (Monthly):30:t_GACDFSA066MSFRBPHI:1
+TB3MS:Month Treasury Bill-Secondary Market Rate (1934):30:t_TB3MS:0
+TCU:Capacity Utilization (Monthly):30:t_TCU:0
