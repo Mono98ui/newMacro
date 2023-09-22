@@ -1,5 +1,0 @@
-https://ca.investing.com/economic-calendar/us-leading-index-1968;showMoreHistory1968;30;t_us_leading_index_1968;Total durable goods orders (Monthly);1
-https://ca.investing.com/economic-calendar/building-permits-25;showMoreHistory25;30;t_building_permits_25;Housing Permits (Monthly);0
-https://ca.investing.com/economic-calendar/chicago-pmi-38;showMoreHistory38;30;t_chicago_pmi_38;Chicago PMI (Monthly);1
-https://ca.investing.com/economic-calendar/total-vehicle-sales-85;showMoreHistory85;30;t_total_vehicle_sales_85;Auto Sales (Monthly);0
-https://www.investing.com/economic-calendar/ism-manufacturing-pmi-173;showMoreHistory173;30;t_ism_manufacturing_pmi_173;ISM manufacturing pmi;1
