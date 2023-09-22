@@ -2,14 +2,13 @@ from database import database
 import re
 import numpy as np
 import pandas as pd
-from email.message import EmailMessage
 from email import encoders
 import ssl
 import smtplib
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import time
+import os
 
 #
 #Param:
@@ -68,7 +67,7 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results):
 #return: results
 #
 def sendEmail(email_sender,email_receiver,filename):
-    pwd = "nucgpfaiqqnhypmw"
+    pwd = os.getenv('MAIL_BOT_PWD')
 
     subject =" Growth Rate Report"
 
@@ -113,7 +112,7 @@ def sendEmail(email_sender,email_receiver,filename):
         smtp.login(email_sender, pwd)
         smtp.sendmail(email_sender,email_receiver, em.as_string())
 
-db = database("MacroDB","Test_user","test")
+db = database(os.getenv('DB_NAME'),os.getenv('DB_USER'),os.getenv('DB_PASSWORD'))
 list_links = db.fetch_links("length(show_more)",">","2")
 indicators = db.fetch_indicators()
 results=([], [], [], [])
@@ -151,7 +150,7 @@ for result in results:
 #Create the csv
 pd.concat(mainDf, ignore_index=True).to_csv("./reportGrowthrate.csv")
 
-sendEmail("macrobot165@gmail.com","Jdannypham@gmail.com","reportGrowthrate.csv")
+sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'),"reportGrowthrate.csv")
 
 db.update_status("process_investing", 0)
 db.update_status("process_fred", 0)

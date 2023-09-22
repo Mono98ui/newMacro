@@ -1,10 +1,11 @@
 import pandas_datareader as pdr
 from datetime import datetime
 from database import database
+import os
 
 start = datetime (2002, 1, 1)
 end = datetime (2040, 6, 1)
-db = database("MacroDB","Test_user","test")
+db = database(os.getenv('DB_NAME'),os.getenv('DB_USER'),os.getenv('DB_PASSWORD'))
 db.update_status("process_fred", 1)
 indicators = db.fetch_indicators()
 

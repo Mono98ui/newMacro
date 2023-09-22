@@ -1,5 +1,6 @@
 from database import database
 import time
+import os
 
 
 #Param:
@@ -80,7 +81,7 @@ def computetwelvemonth(datas, diff):
 
     return results
 
-db = database("MacroDB","Test_user","test")
+db = database(os.getenv('DB_NAME'),os.getenv('DB_USER'),os.getenv('DB_PASSWORD'))
 
 list_links = db.fetch_links("length(show_more)",">","2")
 indicators = db.fetch_indicators()

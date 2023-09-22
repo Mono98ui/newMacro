@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from database import database
 from datetime import datetime
+import os
 
 #
 #Param:
@@ -15,7 +16,7 @@ from datetime import datetime
 def openWebBrowser():
     options = webdriver.FirefoxOptions()
     #A modifier
-    options.binary_location = "C:/Program Files/Mozilla Firefox/firefox.exe"
+    options.binary_location = os.getenv('WEB_DRIVER_PATH')
     webdriver_path="./geckodriver.exe"
     driver = webdriver.Firefox(service=fser(executable_path=webdriver_path), options=options)
     return driver
@@ -111,7 +112,7 @@ def method_ShowMore(driver, info_link):
         
     return list_data
 
-db = database("MacroDB","Test_user","test")
+db = database(os.getenv('DB_NAME'),os.getenv('DB_USER'),os.getenv('DB_PASSWORD'))
 db.update_status("process_investing", 1)
 info_links=db.fetch_links()
 driver = openWebBrowser()
