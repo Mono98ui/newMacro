@@ -9,6 +9,8 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
+from datetime import datetime
+from private import Private
 
 #
 #Param:
@@ -20,11 +22,11 @@ import os
 #This function organize the datas into their modules
 #return: results
 #
-def organizeDataPerModule(t_name, desc, isOsc ,datas, results):
+def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
     money_credit = "^T_(M1SL|M2SL|BOGZ1FL893169105Q|BUSLOANS|TOTALSL)".lower()
     econo = ("^T_(INDPRO|NOCDFSA066MSFRBPHI|PCE|PAYEMS|AWHMAN|USALOLITONOSTSAM|HOUST|PERMIT|RETAIL"
 +"|IC4WSA|GACDFSA066MSFRBPHI|HTRUCKSSA|BOGZ1FL145020011Q)"
-+"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85|t_ism_manufacturing_pmi_173").lower()
++"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85|t_ism_manufacturing_pmi_173|t_durable_goods_orders_86").lower()
     inflation = "^T_(CPIAUCSL|PPIACO|AHETPI)".lower()
     fed_pol= "^T_(NFORBRES|BOGNONBR|REQRESNS|T10YFF|DTB3|FEDFUNDS|INTDSRUSM193N)".lower()
 
@@ -33,26 +35,41 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results):
     inflationTxt = "Inflation"
     fedPolicy= "Fed Policy"
     nameIndicator = t_name.replace("t_","")
+    #Changer le format de la date; enlever les heures
+    #Effacer usalolitonostsam remplacer par 
+    #https://www.investing.com/economic-calendar/durable-goods-orders-86/
+    #et Total durable goods orders (Monthly)
+    #Add column that indicate from which datapoint(optionnel)
+    #Switch le boolean  a  !boolean  avant is Neg  mtn is Pos
+
+    listTmp = list(datas[0])
+    listTmp[len(listTmp)-1] = datas[0][len(datas[0])-1].strftime("%Y-%m-%d")
 
     if isOsc:
-        datas[0] = ("None", datas[0][1], datas[0][2], datas[0][3])
+        #datas[0] = ("None", datas[0][1], datas[0][2], datas[0][3])
+        print(listTmp)
+        listTmp[0] = "None" 
+        listTmp[len(listTmp)-2] = listTmp[len(listTmp)-3] >=0
+        print(listTmp)
+
+    datas[0] = tuple(listTmp)
 
     if re.search(money_credit,t_name):
-        datas[0] = (moneyCreditGrowth,nameIndicator, desc)+datas[0]
+        datas[0] = (moneyCreditGrowth,nameIndicator, desc, sourceData)+datas[0]
         results[0].append(datas[0])
 
     elif re.search(econo,t_name):
         print(t_name)
         print(datas)
-        datas[0] = (economicGrowth,nameIndicator, desc)+datas[0]
+        datas[0] = (economicGrowth,nameIndicator, desc, sourceData)+datas[0]
         results[1].append(datas[0])
 
     elif re.search(inflation,t_name):
-        datas[0] = (inflationTxt,nameIndicator, desc)+datas[0]
+        datas[0] = (inflationTxt,nameIndicator, desc, sourceData)+datas[0]
         results[2].append(datas[0])
 
     elif re.search(fed_pol,t_name):
-        datas[0] = (fedPolicy,nameIndicator, desc)+datas[0]
+        datas[0] = (fedPolicy,nameIndicator, desc, sourceData)+datas[0]
         results[3].append(datas[0])
     else:
          print("Not Catagorize: "+t_name)
@@ -112,11 +129,13 @@ def sendEmail(email_sender,email_receiver,filename):
         smtp.login(email_sender, pwd)
         smtp.sendmail(email_sender,email_receiver, em.as_string())
 
+pr = Private()
+
+
 db = database(os.getenv('DB_NAME'),os.getenv('DB_USER'),os.getenv('DB_PASSWORD'))
 list_links = db.fetch_links("length(show_more)",">","2")
 indicators = db.fetch_indicators()
 results=([], [], [], [])
-
 #Organise the growth rate for investing
 for link in list_links:
     datas = db.fetch_table_show_gr(link[4]+"_gr","t1"
@@ -125,7 +144,7 @@ for link in list_links:
 +" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
 +" order by t1.date desc"
 +" limit 1")
-    results = organizeDataPerModule(link[4].lower(),link[5], link[6] ,datas, results)
+    results = organizeDataPerModule(link[4].lower(),link[5], link[6] ,datas, results, "investing")
 
 #Organise the growth rate for fred
 for indicator in indicators:
@@ -135,7 +154,7 @@ for indicator in indicators:
 +" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
 +" order by t1.date desc"
 +" limit 1")
-    results = organizeDataPerModule(indicator[3].lower(), indicator[1], indicator[4], datas, results)
+    results = organizeDataPerModule(indicator[3].lower(), indicator[1], indicator[4], datas, results, "fred")
 
 mainDf = []
 #Concatenate the data into one dataframe
@@ -143,7 +162,7 @@ for result in results:
 
     my_array = np.array(result)
 
-    df = pd.DataFrame(my_array, columns = ['Module','Indicator','Description','3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Negatif', 'Date'],)
+    df = pd.DataFrame(my_array, columns = ['Module','Indicator','Description',"Source of Data",'3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Positive', 'Date'],)
 
     mainDf.append(df)
 
@@ -154,3 +173,4 @@ sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'),"reportGrowthrate.csv
 
 db.update_status("process_investing", 0)
 db.update_status("process_fred", 0)
+pr.clean()

@@ -2,6 +2,10 @@ import pandas_datareader as pdr
 from datetime import datetime
 from database import database
 import os
+from private import Private
+
+pr = Private()
+
 
 start = datetime (2002, 1, 1)
 end = datetime (2040, 6, 1)
@@ -27,3 +31,5 @@ for indicator in indicators:
     except:
         db.update_status("process_fred", -1)
 db.update_status("process_fred", 2)
+
+pr.clean()

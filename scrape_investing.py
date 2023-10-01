@@ -8,6 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from database import database
 from datetime import datetime
 import os
+from private import Private
 
 #
 #Param:
@@ -112,11 +113,16 @@ def method_ShowMore(driver, info_link):
         
     return list_data
 
+
+pr = Private()
+
+
 db = database(os.getenv('DB_NAME'),os.getenv('DB_USER'),os.getenv('DB_PASSWORD'))
 db.update_status("process_investing", 1)
 info_links=db.fetch_links()
 driver = openWebBrowser()
 driver.maximize_window()
+print(info_links)
 for info_link in info_links:
 
     #if showMore is not empty
@@ -129,3 +135,5 @@ for info_link in info_links:
             db.update_status("process_investing", -1)
 driver.quit()
 db.update_status("process_investing", 2)
+
+pr.clean()
