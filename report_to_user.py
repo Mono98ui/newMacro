@@ -35,12 +35,6 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
     inflationTxt = "Inflation"
     fedPolicy= "Fed Policy"
     nameIndicator = t_name.replace("t_","")
-    #Changer le format de la date; enlever les heures
-    #Effacer usalolitonostsam remplacer par 
-    #https://www.investing.com/economic-calendar/durable-goods-orders-86/
-    #et Total durable goods orders (Monthly)
-    #Add column that indicate from which datapoint(optionnel)
-    #Switch le boolean  a  !boolean  avant is Neg  mtn is Pos
 
     listTmp = list(datas[0])
     listTmp[len(listTmp)-1] = datas[0][len(datas[0])-1].strftime("%Y-%m-%d")
