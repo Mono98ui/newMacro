@@ -6,6 +6,7 @@ from selenium.webdriver.firefox.service import Service as fser
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from database import database
+import datetime
 from datetime import datetime
 import os
 from private import Private
@@ -72,10 +73,18 @@ def method_ShowMore(driver, info_link):
     #fix
     compter_fix = 0
 
-    while( compter < 42 and showMore.is_displayed() and showMore.is_enabled()):
+    start_date = datetime(2002, 1, 1)
+    end_date = datetime.now()
+
+    # Calculate the Total Number of months between two dates
+    num_months = (end_date.year - start_date.year) * 12 + (end_date.month - start_date.month)
+
+    print(num_months)
+
+    while( compter <  int(num_months/6)  and showMore.is_displayed() and showMore.is_enabled()):
         showMore.click()
         compter+=1
-        time.sleep(0.2)
+        time.sleep(0.5)
 
 
     page = driver.page_source

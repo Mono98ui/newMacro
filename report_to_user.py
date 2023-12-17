@@ -24,9 +24,10 @@ from private import Private
 #
 def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
     money_credit = "^T_(M1SL|M2SL|BOGZ1FL893169105Q|BUSLOANS|TOTALSL)".lower()
-    econo = ("^T_(INDPRO|NOCDFSA066MSFRBPHI|PCE|PAYEMS|AWHMAN|USALOLITONOSTSAM|HOUST|PERMIT|RETAIL"
-+"|IC4WSA|GACDFSA066MSFRBPHI|HTRUCKSSA|BOGZ1FL145020011Q)"
-+"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85|t_ism_manufacturing_pmi_173|t_durable_goods_orders_86").lower()
+    econo = ("^T_(INDPRO|NOCDFSA066MSFRBPHI|PCE|PAYEMS|AWHMAN|USALOLITONOSTSAM|HOUST|PERMIT"
++"|IC4WSA|GACDFSA066MSFRBPHI|HTRUCKSSA|BOGZ1FL145020011Q"
++"|us_leading_index_1968|building_permits_25|chicago_pmi_38|total_vehicle_sales_85"
++"|ism_manufacturing_pmi_173|durable_goods_orders_86|retail_sales_256)").lower()
     inflation = "^T_(CPIAUCSL|PPIACO|AHETPI)".lower()
     fed_pol= "^T_(NFORBRES|BOGNONBR|REQRESNS|T10YFF|DTB3|FEDFUNDS|INTDSRUSM193N)".lower()
 
