@@ -65,10 +65,15 @@ class database:
         cur = conn.cursor()
         for data in list_data:
             #Ajouter  "ON CONFLICT (date) DO NOTHING" a la requete pour debugger
+            #cur.execute(
+            #sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO  update set value = %s where {}.date = %s")
+            #    .format(sql.Identifier(t_name), sql.Identifier(t_name)),
+            #[data["timestamp"], data["value"], data["value"], data["timestamp"]])
+
             cur.execute(
-            sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO  update set value = %s where {}.date = %s")
+            sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO NOTHING")
                 .format(sql.Identifier(t_name), sql.Identifier(t_name)),
-            [data["timestamp"], data["value"], data["value"], data["timestamp"]])
+            [data["timestamp"], data["value"]])
 
         conn.commit()
         conn.close()
