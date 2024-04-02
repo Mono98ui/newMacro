@@ -1,27 +1,27 @@
 ,Module,Indicator,Description,Source of Data,3 Month Ann.,12 Month/ 1 Year Growth,Has crossover/is Positive,Date
-0,MoneyCreditGrowth,m1sl,M1 (Monthly),fred,-7.32,-10.04,True,2023-10-01
-1,MoneyCreditGrowth,m2sl,M2 (Monthly),fred,-2.62,-3.30,True,2023-10-01
-2,MoneyCreditGrowth,bogz1fl893169105q,Commercial paper outstanding (Quarterly),fred,13.96,5.55,True,2023-07-01
-3,MoneyCreditGrowth,busloans,Commercial and industrial loans at banks (Monthly),fred,0.83,-0.91,True,2023-11-01
-4,MoneyCreditGrowth,totalsl,Consumer instalment credit (Monthly),fred,0.40,3.05,False,2023-10-01
-5,EconomicGrowth,durable_goods_orders_86,Total durable goods orders (Monthly),investing,None,1.59,True,2023-11-22
-6,EconomicGrowth,us_leading_index_1968,LEI Conference Board ,investing,None,-7.93,False,2023-11-20
-7,EconomicGrowth,building_permits_25,Housing Permits (Monthly),investing,16.14,52.86,False,2023-11-27
-8,EconomicGrowth,chicago_pmi_38,Chicago PMI (Monthly),investing,None,50.00,True,2023-11-30
-9,EconomicGrowth,total_vehicle_sales_85,Auto Sales (Monthly),investing,8.81,8.65,True,2023-12-05
-10,EconomicGrowth,ism_manufacturing_pmi_173,ISM manufacturing pmi,investing,None,-4.69,False,2023-12-01
-11,EconomicGrowth,retail_sales_256,Retail Sales US,investing,5.70,3.81,True,2023-12-14
-12,EconomicGrowth,indpro,Industrial Production (Monthly),fred,-2.12,-0.39,False,2023-11-01
-13,EconomicGrowth,pce,Personal Consumption Expenditures (Monthly),fred,5.33,5.30,True,2023-10-01
-14,EconomicGrowth,payems,Employment (Monthly),fred,1.57,1.81,False,2023-11-01
-15,EconomicGrowth,awhman,Average work week (Monthly),fred,-1.95,-0.49,False,2023-11-01
-16,EconomicGrowth,houst,Housing Starts (Monthly),fred,-20.06,-4.19,False,2023-10-01
-17,EconomicGrowth,ic4wsa,Average weekly initial claims for unemployment (Weekly),fred,-7.16,-0.12,False,2023-12-09
-18,EconomicGrowth,bogz1fl145020011q,"Inventories Level, (Excluding Farms),  (Quarterly)",fred,4.83,-1.23,True,2023-07-01
-19,EconomicGrowth,gacdfsa066msfrbphi,Philly Fed PMI (Monthly),fred,None,-61.94,False,2023-11-01
-20,Inflation,cpiaucsl,Consumer price index- all items (Monthly),fred,2.17,3.12,False,2023-11-01
-21,Inflation,ppiaco,Producer price index-all items (Monthly),fred,-5.86,-3.55,False,2023-11-01
-22,Inflation,ahetpi,Average hourly earnings (Monthly),fred,4.20,4.31,False,2023-11-01
-23,Fed Policy,t10yff,Yield Curve (Daily),fred,-96.46,513.04,False,2023-12-14
-24,Fed Policy,dtb3,T-bill rate (Daily),fred,8448.56,22.48,True,2023-12-14
-25,Fed Policy,fedfunds,Fed funds rate (Monthly),fred,0.00,41.01,False,2023-11-01
+0,MoneyCreditGrowth,m1sl,M1 (Monthly),fred,-1.56,-7.30,True,2024-02-01
+1,MoneyCreditGrowth,m2sl,M2 (Monthly),fred,1.14,-1.66,True,2024-02-01
+2,MoneyCreditGrowth,bogz1fl893169105q,Commercial paper outstanding (Quarterly),fred,1.39,0.59,True,2023-10-01
+3,MoneyCreditGrowth,busloans,Commercial and industrial loans at banks (Monthly),fred,0.09,-1.46,True,2024-02-01
+4,MoneyCreditGrowth,totalsl,Consumer instalment credit (Monthly),fred,3.97,2.50,True,2024-01-01
+5,EconomicGrowth,durable_goods_orders_86,Total durable goods orders (Monthly),investing,None,4.88,True,2024-03-26
+6,EconomicGrowth,us_leading_index_1968,LEI Conference Board ,investing,None,-6.88,False,2024-03-21
+7,EconomicGrowth,building_permits_25,Housing Permits (Monthly),investing,16.47,-1.68,True,2024-03-25
+8,EconomicGrowth,chicago_pmi_38,Chicago PMI (Monthly),investing,None,-5.48,False,2024-03-28
+9,EconomicGrowth,total_vehicle_sales_85,Auto Sales (Monthly),investing,13.42,6.11,True,2024-03-05
+10,EconomicGrowth,ism_manufacturing_pmi_173,ISM manufacturing pmi,investing,None,8.64,True,2024-04-01
+11,EconomicGrowth,retail_sales_256,Retail Sales US,investing,None,2.68,True,2024-03-14
+12,EconomicGrowth,indpro,Industrial Production (Monthly),fred,-2.55,-0.23,False,2024-02-01
+13,EconomicGrowth,pce,Personal Consumption Expenditures (Monthly),fred,6.19,4.88,True,2024-02-01
+14,EconomicGrowth,payems,Employment (Monthly),fred,2.04,1.77,True,2024-02-01
+15,EconomicGrowth,awhman,Average work week (Monthly),fred,0.00,-0.49,True,2024-02-01
+16,EconomicGrowth,houst,Housing Starts (Monthly),fred,2.40,5.92,False,2024-02-01
+17,EconomicGrowth,ic4wsa,Average weekly initial claims for unemployment (Weekly),fred,10.60,6.70,True,2024-03-23
+18,EconomicGrowth,bogz1fl145020011q,"Inventories Level, (Excluding Farms),  (Quarterly)",fred,0.43,-0.74,True,2023-10-01
+19,EconomicGrowth,gacdfsa066msfrbphi,Philly Fed PMI (Monthly),fred,None,-114.29,False,2024-03-01
+20,Inflation,cpiaucsl,Consumer price index- all items (Monthly),fred,3.99,3.17,True,2024-02-01
+21,Inflation,ppiaco,Producer price index-all items (Monthly),fred,4.15,-1.22,True,2024-02-01
+22,Inflation,ahetpi,Average hourly earnings (Monthly),fred,4.00,4.54,False,2024-02-01
+23,Fed Policy,t10yff,Yield Curve (Daily),fred,28.08,-25.93,True,2024-04-01
+24,Fed Policy,dtb3,T-bill rate (Daily),fred,-3.73,11.75,False,2024-04-01
+25,Fed Policy,fedfunds,Fed funds rate (Monthly),fred,0.00,14.62,False,2024-03-01
