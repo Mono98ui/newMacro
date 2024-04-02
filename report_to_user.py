@@ -165,7 +165,7 @@ for result in results:
 os.remove("./reportGrowthrate.csv")
 pd.concat(mainDf, ignore_index=True).to_csv("./reportGrowthrate.csv")
 
-#sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'),"reportGrowthrate.csv")
+sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'),"reportGrowthrate.csv")
 
 db.update_status("process_investing", 0)
 db.update_status("process_fred", 0)
