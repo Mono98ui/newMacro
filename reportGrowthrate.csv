@@ -6,9 +6,9 @@
 4,MoneyCreditGrowth,totalsl,Consumer instalment credit (Monthly),fred,3.97,2.50,True,2024-01-01
 5,EconomicGrowth,durable_goods_orders_86,Total durable goods orders (Monthly),investing,None,4.88,True,2024-03-26
 6,EconomicGrowth,us_leading_index_1968,LEI Conference Board ,investing,None,-6.88,False,2024-03-21
-7,EconomicGrowth,building_permits_25,Housing Permits (Monthly),investing,16.47,211.02,False,2024-03-25
+7,EconomicGrowth,building_permits_25,Housing Permits (Monthly),investing,16.47,-1.68,True,2024-03-25
 8,EconomicGrowth,chicago_pmi_38,Chicago PMI (Monthly),investing,None,-5.48,False,2024-03-28
-9,EconomicGrowth,total_vehicle_sales_85,Auto Sales (Monthly),investing,13.42,20.69,False,2024-03-05
+9,EconomicGrowth,total_vehicle_sales_85,Auto Sales (Monthly),investing,13.42,6.11,True,2024-03-05
 10,EconomicGrowth,ism_manufacturing_pmi_173,ISM manufacturing pmi,investing,None,8.64,True,2024-04-01
 11,EconomicGrowth,retail_sales_256,Retail Sales US,investing,None,2.68,True,2024-03-14
 12,EconomicGrowth,indpro,Industrial Production (Monthly),fred,-2.55,-0.23,False,2024-02-01
@@ -22,6 +22,6 @@
 20,Inflation,cpiaucsl,Consumer price index- all items (Monthly),fred,3.99,3.17,True,2024-02-01
 21,Inflation,ppiaco,Producer price index-all items (Monthly),fred,4.15,-1.22,True,2024-02-01
 22,Inflation,ahetpi,Average hourly earnings (Monthly),fred,4.00,4.54,False,2024-02-01
-23,Fed Policy,t10yff,Yield Curve (Daily),fred,-36.45,-28.06,False,2024-04-01
-24,Fed Policy,dtb3,T-bill rate (Daily),fred,-4.46,0.58,False,2024-04-01
+23,Fed Policy,t10yff,Yield Curve (Daily),fred,28.08,-25.93,True,2024-04-01
+24,Fed Policy,dtb3,T-bill rate (Daily),fred,-3.73,11.75,False,2024-04-01
 25,Fed Policy,fedfunds,Fed funds rate (Monthly),fred,0.00,14.62,False,2024-03-01

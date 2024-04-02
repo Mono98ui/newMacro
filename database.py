@@ -157,6 +157,17 @@ class database:
         datas = cur.fetchall()
         conn.close()
         return datas
+
+    def fetch_table_Main(self, t_name, columnName, operator, columnVal):
+        where = sql.SQL("where {}{}{}").format(sql.SQL(columnName), sql.SQL(operator), sql.Literal(columnVal)) if columnName and columnVal else sql.SQL("")
+        conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
+        cur = conn.cursor()
+        cur.execute(
+            sql.SQL("select * from {} {} order by {}.date")
+                .format(sql.Identifier(t_name), where, sql.Identifier(t_name)))
+        datas = cur.fetchall()
+        conn.close()
+        return datas
     #
     #Param:
     #id: The id of the process

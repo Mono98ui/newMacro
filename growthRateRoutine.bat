@@ -6,3 +6,4 @@ C:/Users/phamk/anaconda3/envs/macro/python.exe c:/Users/phamk/Documents/GitHub/N
 C:/Users/phamk/anaconda3/envs/macro/python.exe c:/Users/phamk/Documents/GitHub/NewMacro/growth_rate.py
 ::This file executed the file creating the report and send and email to the user
 C:/Users/phamk/anaconda3/envs/macro/python.exe c:/Users/phamk/Documents/GitHub/NewMacro/report_to_user.py
+pause

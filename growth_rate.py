@@ -93,7 +93,7 @@ db.update_status("process_investing", 3)
 
 #Calculate growth rate data from investing.com
 for link in list_links:
-    datas = db.fetch_table(link[4],"","", "")
+    datas = db.fetch_table_Main(link[4],"","", "")
     results = computethreemonth(datas, link[3])
     db.insert_value_component_gr(link[4]+"_gr",results)
     results = computetwelvemonth(datas, link[3])
@@ -105,7 +105,7 @@ db.update_status("process_fred", 3)
 
 #Calculate growth rate data from Fred
 for indicator in indicators:
-    datas = db.fetch_table(indicator[3].lower(),"","", "")
+    datas = db.fetch_table_Main(indicator[3].lower(),"","", "")
     results = computethreemonth(datas, indicator[2])
     db.insert_value_component_gr(indicator[3].lower()+"_gr",results)
     results = computetwelvemonth(datas, indicator[2])
