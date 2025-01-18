@@ -1,0 +1,11 @@
+private.py
+links.txt
+indicators.txt
+growthRateRoutine.bat
+restore_points.py
+reportGrowthrate*
+SQL/*.sql
+__pycache__/*.pyc
+__pycache__/database.cpython-311.pyc
+__pycache__/private.cpython-311.pyc
+__pycache__/database.cpython-311.pyc
