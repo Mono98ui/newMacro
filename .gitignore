@@ -4,6 +4,7 @@ indicators.txt
 growthRateRoutine.bat
 restore_points.py
 reportGrowthrate*
+code.txt
 SQL/*.sql
 __pycache__/*.pyc
 __pycache__/database.cpython-311.pyc

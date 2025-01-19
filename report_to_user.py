@@ -9,10 +9,12 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import os
-from datetime import datetime
 from private import Private
+import csv
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill
 
-nbrHawkish = 0;
+nbrHawkish = 0
 nbrDovish = 0
 #
 #Param:
@@ -125,7 +127,112 @@ def sendEmail(email_sender,email_receiver,filename):
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         smtp.login(email_sender, pwd)
         smtp.sendmail(email_sender,email_receiver, em.as_string())
+#
+#Param:
+#columnNames: Columns of the report
+#sum_CBStance: array of array containg the sum
+#padding_column: extra empty data to fill the column
+#results: The data of the report
+#This function add the sum field to the report
+#return: results
+#
+def addSummaryCBStance(columnNames, sum_CBStance, padding_column, results):
 
+    index_CBStance = 0
+
+    #Concatenate the data into one dataframe
+    for result in results:
+        for i in range(len(result)):
+            temp_res = list(result[i])
+            #Ajoute de somme de cbstance a la 1er et 2ieme range
+            if(index_CBStance < len(sum_CBStance)):
+                temp_res+= sum_CBStance[index_CBStance]
+                result[i] = tuple(temp_res)
+                index_CBStance+=1
+            #Le reste ajoute du vide pour matcher le nombre de colonne
+            else:
+                temp_res+= [""] * padding_column
+                result[i] = tuple(temp_res)
+
+        my_array = np.array(result)
+        df = pd.DataFrame(my_array, columns = columnNames,)
+        mainDf.append(df)
+
+    return results
+#
+#This function tag the modfiy data of each row
+#return: results
+#
+def tagModifyRow():
+    modifyRowIndex= []
+    previousDf = pd.read_csv("./reportGrowthrate.csv").fillna('')
+    newDf=pd.concat(mainDf, ignore_index=True)
+
+    #Check if Data same shape in order to highlight real change
+    if(previousDf.shape == newDf.shape):
+
+        #Iterate each row previous data or row new data
+        for i in range(previousDf.shape[0]):
+
+            #replace None data of oscillator with empty string
+            #Else convert everyting to float
+            if(newDf.iloc[i].values[4] == None):
+                newDf.iloc[i].values[4]= ''
+            else:
+                newDf.iloc[i].values[4] = float(newDf.iloc[i].values[4])
+            newDf.iloc[i].values[5] = float(newDf.iloc[i].values[5])
+
+            checkElementSame = (newDf.iloc[i].values == previousDf.iloc[i].values)
+            modifyIndex = []
+
+            #tag modify field
+            for i in range(len(checkElementSame)):
+                if not checkElementSame[i]:
+                    modifyIndex.append(i)
+            modifyRowIndex.append(modifyIndex)
+    return modifyRowIndex
+#
+#Param:
+#fichierCSV: name of the csv file
+#fichierExcel: name of the excel file
+#This function create the excel with custom
+#
+def createExcelFileWithHighLight(fichierCSV, fichierExcel):
+        
+    #Save the csv into excel file
+    wb = Workbook()
+    ws = wb.active
+    #Copy each row
+    with open(fichierCSV, 'r') as f:
+        for row in csv.reader(f):
+            ws.append(row)
+
+    #Yellow
+    highlight_y = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
+    #Orange
+    highlight_o = PatternFill(start_color="FFA500", end_color="FFA500", fill_type="solid")
+    #Light blue color 
+    highlight_b = PatternFill(start_color="ADD8E6", end_color="ADD8E6", fill_type="solid")
+
+    for cell in ws[16]:  #Highlight row 16
+        cell.fill = highlight_b
+    for cell in ws[22]:  #Highlight row 22
+        cell.fill = highlight_b
+        
+    # Highlight each wrong row
+    for i_row in range(len(modifyRowIndex)):  # Loop through the row numbers
+        if(len(modifyRowIndex[i_row]) != 0):
+
+            # Highlight each modify row
+            for cell in ws[i_row+2]:  # Loop through each cell in the row
+                cell.fill = highlight_y
+            # Highlight each modify field of row
+            for mod_cell in modifyRowIndex[i_row]:  # Loop through modify cell in the row
+                ws[i_row+2][mod_cell].fill = highlight_o
+        
+    wb.save(fichierExcel)
+
+###debut code###
 pr = Private()
 
 
@@ -164,68 +271,48 @@ for indicator in indicators:
     results = organizeDataPerModule(indicator[3].lower(), indicator[1], indicator[4], datas, results, "fred")
 
 mainDf = []
-sum_CBStance = []
 padding_of_sum= 2
+sum_CBStance = []
+modifyRowIndex = []
 
+#Create the sum hawkish table
 empty_string_list = [""] * padding_of_sum
 empty_string_list.append("Sum of Hawkish: ")
 empty_string_list.append(nbrHawkish)
 sum_CBStance.append(empty_string_list)
 
+#Create the sum Dovish table
 empty_string_list = [""] * 2
 empty_string_list.append("Sum of Dovish: ")
 empty_string_list.append(nbrDovish)
 sum_CBStance.append(empty_string_list)
 
 padding_column = len(sum_CBStance) * padding_of_sum
-index_CBStance = 0
 columnNames= ['Module','Indicator','Description',"Source of Data",'3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Positive', 'CB Stance', 'Date']+[""] * padding_column
 
-#Concatenate the data into one dataframe
-for result in results:
-    for i in range(len(result)):
-        temp_res = list(result[i])
-        if(index_CBStance < len(sum_CBStance)):
-            temp_res+= sum_CBStance[index_CBStance]
-            result[i] = tuple(temp_res)
-            index_CBStance+=1
-        else:
-            temp_res+= [""] * padding_column
-            result[i] = tuple(temp_res)
+results = addSummaryCBStance(columnNames, sum_CBStance, padding_column, results)
+fichierExcel = "./reportGrowthrate.xlsx"
+fichierCSV = "./reportGrowthrate.csv"
 
-        #print("fini")
+if os.path.isfile(fichierCSV):
+    modifyRowIndex = tagModifyRow()
 
-    print(result)
-    my_array = np.array(result)
-    exit
-    df = pd.DataFrame(my_array, columns = columnNames,)
-    mainDf.append(df)
+#Check if all index has no change or there is no report in csv or excel, if so dont send email
+if( not all(not rowIndex  for rowIndex in modifyRowIndex) or not (os.path.isfile(fichierCSV)) or not (os.path.isfile(fichierExcel))):
 
-#Documenter metter data vertical
-#empty_string_list = [""] * (len(columnNames)-2)
-#empty_string_list.append("Sum of Hawkish: ")
-#empty_string_list.append(nbrHawkish)
-#dfsumHawk=np.array(empty_string_list)
-#tableau 2d avec une rangee
-#reshape_df= dfsumHawk.reshape(1,9)
-#df = pd.DataFrame(reshape_df, columns = columnNames)
-#mainDf.append(df)
+    if os.path.isfile(fichierExcel):
+        os.remove(fichierExcel)
 
-#empty_string_list = [""] * (len(columnNames)-2)
-#empty_string_list.append("Sum of Dovish: ")
-#empty_string_list.append(nbrDovish)
-#dfsumDov=np.array(empty_string_list)
-#reshape_df= dfsumDov.reshape(1,9)
-#df = pd.DataFrame(reshape_df, columns = columnNames)
-#mainDf.append(df)
+    if os.path.isfile(fichierCSV):
+        os.remove(fichierCSV)
+    
+    currentPath = os.getcwd()
+    #Create the csv
+    pd.concat(mainDf, ignore_index=True).to_csv(currentPath+"\\reportGrowthrate.csv", index=False)
+    #Create Excel file
+    createExcelFileWithHighLight(fichierCSV, fichierExcel)
 
-#Create the csv
-if os.path.isfile("./reportGrowthrate.csv"):
-    os.remove("./reportGrowthrate.csv")
-currentPath = os.getcwd()
-pd.concat(mainDf, ignore_index=True).to_csv(currentPath+"\\reportGrowthrate.csv", index=False)
-
-sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'),"reportGrowthrate.csv")
+    sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'), fichierExcel)
 
 db.update_status("process_investing", 0)
 db.update_status("process_fred", 0)
