@@ -82,17 +82,39 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
 #This function send the emails to the email_receiver
 #return: results
 #
-def sendEmail(email_sender,email_receiver,filename):
+def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,indicators):
     pwd = os.getenv('MAIL_BOT_PWD')
 
     subject =" Growth Rate Report"
+    global nbrDovish
+    global nbrHawkish
+    changeRow =""
+    index = 0
+    for i in range(len(modifyRowIndex)):
+
+        if(modifyRowIndex[i]):
+            index = i+2 
+            fieldRow = ""
+            for field in modifyRowIndex[i]:
+                field = columnNames[field]
+                fieldRow+="    {}\n".format(field)
+            changeRow+="Columns of {} changed :\n".format(indicators[index])+fieldRow+"\n    "
+
+    if(len(changeRow) == 0):
+        changeRow = "There is no change.\n"
 
     message = """
     Good morning,\n
     This is the growth rate report.\n
+    {}
+    Here is the CBStance summary:\n
+    number of hawkish:{}\n
+    number of dovish:{}\n
     Have a nice day\n
     macroBot.
-    """
+    """.format(changeRow, nbrHawkish, nbrDovish)
+    
+    print(MIMEText(message, "plain"))
 
     em = MIMEMultipart()
 
@@ -288,6 +310,35 @@ empty_string_list.append(nbrDovish)
 sum_CBStance.append(empty_string_list)
 
 padding_column = len(sum_CBStance) * padding_of_sum
+indicators = [
+    "m1sl",
+    "m2sl",
+    "bogz1fl893169105q",
+    "busloans",
+    "totalsl",
+    "us_leading_index_1968",
+    "building_permits_25",
+    "chicago_pmi_38",
+    "total_vehicle_sales_85",
+    "ism_manufacturing_pmi_173",
+    "durable_goods_orders_86",
+    "retail_sales_256",
+    "indpro",
+    "pce",
+    "payems",
+    "awhman",
+    "houst",
+    "ic4wsa",
+    "bogz1fl145020011q",
+    "gacdfsa066msfrbphi",
+    "cpiaucsl",
+    "ppiaco",
+    "ahetpi",
+    "t10yff",
+    "dtb3",
+    "fedfunds"
+]
+
 columnNames= ['Module','Indicator','Description',"Source of Data",'3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Positive', 'CB Stance', 'Date']+[""] * padding_column
 
 results = addSummaryCBStance(columnNames, sum_CBStance, padding_column, results)
@@ -297,22 +348,22 @@ fichierCSV = "./reportGrowthrate.csv"
 if os.path.isfile(fichierCSV):
     modifyRowIndex = tagModifyRow()
 
-#Check if all index has no change or there is no report in csv or excel, if so dont send email
-if( not all(not rowIndex  for rowIndex in modifyRowIndex) or not (os.path.isfile(fichierCSV)) or not (os.path.isfile(fichierExcel))):
+#Check if all index has no change or there is no report in csv or excel, if so dont send email(rechcheck)
+#if( not all(rowIndex  for rowIndex in modifyRowIndex) or not (os.path.isfile(fichierCSV)) or not (os.path.isfile(fichierExcel))):
 
-    if os.path.isfile(fichierExcel):
-        os.remove(fichierExcel)
+if os.path.isfile(fichierExcel):
+    os.remove(fichierExcel)
 
-    if os.path.isfile(fichierCSV):
-        os.remove(fichierCSV)
-    
-    currentPath = os.getcwd()
-    #Create the csv
-    pd.concat(mainDf, ignore_index=True).to_csv(currentPath+"\\reportGrowthrate.csv", index=False)
-    #Create Excel file
-    createExcelFileWithHighLight(fichierCSV, fichierExcel)
+if os.path.isfile(fichierCSV):
+    os.remove(fichierCSV)
 
-    sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'), fichierExcel)
+currentPath = os.getcwd()
+#Create the csv
+pd.concat(mainDf, ignore_index=True).to_csv(currentPath+"\\reportGrowthrate.csv", index=False)
+#Create Excel file
+createExcelFileWithHighLight(fichierCSV, fichierExcel)
+
+sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'), fichierExcel, modifyRowIndex, columnNames, indicators)
 
 db.update_status("process_investing", 0)
 db.update_status("process_fred", 0)
