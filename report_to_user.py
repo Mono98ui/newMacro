@@ -114,8 +114,6 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,in
     macroBot.
     """.format(changeRow, nbrHawkish, nbrDovish)
     
-    print(MIMEText(message, "plain"))
-
     em = MIMEMultipart()
 
     em['From'] = email_sender
