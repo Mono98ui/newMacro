@@ -39,16 +39,11 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
     economicGrowth="EconomicGrowth"
     inflationTxt = "Inflation"
     fedPolicy= "Fed Policy"
+    isCategorize = True
     nameIndicator = t_name.replace("t_","")
     listTmp = list(datas[0])
     listTmp[len(listTmp)-1] = datas[0][len(datas[0])-1].strftime("%Y-%m-%d")
-
-    if listTmp[len(listTmp)-3]:
-        global nbrHawkish
-        nbrHawkish+=1
-    else:
-        global nbrDovish
-        nbrDovish+=1
+    
 
     datas[0] = tuple(listTmp)
 
@@ -68,7 +63,16 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
         datas[0] = (fedPolicy,nameIndicator, desc, sourceData)+datas[0]
         results[3].append(datas[0])
     else:
-         print("Not Catagorize: "+t_name)
+        print("Not Catagorize: "+t_name)
+        isCategorize = False
+         
+    if isCategorize:
+        if listTmp[len(listTmp)-3]:
+            global nbrHawkish
+            nbrHawkish+=1
+        else:
+            global nbrDovish
+            nbrDovish+=1
 
     return results
 #
