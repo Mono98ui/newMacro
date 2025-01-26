@@ -17,7 +17,6 @@ from round_decimal import round_decimal
 
 nbrHawkish = 0
 nbrDovish = 0
-
 #
 #Param:
 #t_name: table name
