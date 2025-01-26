@@ -61,14 +61,17 @@ class database:
     #This method insert data from indicators
     #
     def insert_value_component(self, t_name, list_data):
+        
         conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
+        
         for data in list_data:
             #Ajouter  "ON CONFLICT (date) DO NOTHING" a la requete pour debugger
+            # ON CONFLICT (date) DO  update set value = %s where {}.date = %s
             cur.execute(
-            sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO  update set value = %s where {}.date = %s")
+            sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO NOTHING")
                 .format(sql.Identifier(t_name), sql.Identifier(t_name)),
-            [data["timestamp"], data["value"], data["value"], data["timestamp"]])
+            [data["timestamp"], data["value"]])
 
             #cur.execute(
             #sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO NOTHING")

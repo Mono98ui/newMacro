@@ -13,6 +13,7 @@ from private import Private
 import csv
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
+from round_decimal import round_decimal
 
 nbrHawkish = 0
 nbrDovish = 0
@@ -34,13 +35,11 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
 +"|ism_manufacturing_pmi_173|durable_goods_orders_86|retail_sales_256)").lower()
     inflation = "^T_(CPIAUCSL|PPIACO|AHETPI)".lower()
     fed_pol= "^T_(NFORBRES|BOGNONBR|REQRESNS|T10YFF|DTB3|FEDFUNDS|INTDSRUSM193N)".lower()
-
     moneyCreditGrowth= "MoneyCreditGrowth"
     economicGrowth="EconomicGrowth"
     inflationTxt = "Inflation"
     fedPolicy= "Fed Policy"
     nameIndicator = t_name.replace("t_","")
-
     listTmp = list(datas[0])
     listTmp[len(listTmp)-1] = datas[0][len(datas[0])-1].strftime("%Y-%m-%d")
 
@@ -58,8 +57,6 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
         results[0].append(datas[0])
 
     elif re.search(econo,t_name):
-        print(t_name)
-        print(datas)
         datas[0] = (economicGrowth,nameIndicator, desc, sourceData)+datas[0]
         results[1].append(datas[0])
 
@@ -93,7 +90,7 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,in
     for i in range(len(modifyRowIndex)):
 
         if(modifyRowIndex[i]):
-            index = i+2 
+            index = i 
             fieldRow = ""
             for field in modifyRowIndex[i]:
                 field = columnNames[field]
@@ -113,7 +110,9 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,in
     Have a nice day\n
     macroBot.
     """.format(changeRow, nbrHawkish, nbrDovish)
-    
+
+    print(message)
+
     em = MIMEMultipart()
 
     em['From'] = email_sender
@@ -144,9 +143,9 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,in
 
     context = ssl.create_default_context()
 
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
-        smtp.login(email_sender, pwd)
-        smtp.sendmail(email_sender,email_receiver, em.as_string())
+#    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+#        smtp.login(email_sender, pwd)
+#        smtp.sendmail(email_sender,email_receiver, em.as_string())
 #
 #Param:
 #columnNames: Columns of the report
@@ -183,7 +182,7 @@ def addSummaryCBStance(columnNames, sum_CBStance, padding_column, results):
 #This function tag the modfiy data of each row
 #return: results
 #
-def tagModifyRow():
+def tagModifyRow(mainDf):
     modifyRowIndex= []
     previousDf = pd.read_csv("./reportGrowthrate.csv").fillna('')
     newDf=pd.concat(mainDf, ignore_index=True)
@@ -195,21 +194,23 @@ def tagModifyRow():
         for i in range(previousDf.shape[0]):
 
             #replace None data of oscillator with empty string
-            #Else convert everyting to float
-            if(newDf.iloc[i].values[4] == None):
-                newDf.iloc[i].values[4]= ''
+            #Else convert everyting to Decimal
+            previousRowData = previousDf.iloc[i].values.tolist()
+            newRowData = newDf.iloc[i].values.tolist()
+            
+            if(previousRowData[4] == ''):
+                previousRowData[4]= None
             else:
-                newDf.iloc[i].values[4] = float(newDf.iloc[i].values[4])
-            newDf.iloc[i].values[5] = float(newDf.iloc[i].values[5])
+                previousRowData[4] = round_decimal(previousRowData[4])
+            previousRowData[5] = round_decimal(previousRowData[5])
 
-            checkElementSame = (newDf.iloc[i].values == previousDf.iloc[i].values)
             modifyIndex = []
-
             #tag modify field
-            for i in range(len(checkElementSame)):
-                if not checkElementSame[i]:
-                    modifyIndex.append(i)
+            for j in range(len(previousRowData)):
+                if not (previousRowData[j] == newRowData[j]):
+                    modifyIndex.append(j)
             modifyRowIndex.append(modifyIndex)
+            
     return modifyRowIndex
 #
 #Param:
@@ -273,6 +274,7 @@ for link in list_links:
 +" where t1.value is not NULL and t1.intervalmonth = 3 and  t2.value is not NULL"
 +" order by t1.date desc"
 +" limit 1")
+    print(link[4].lower())
     results = organizeDataPerModule(link[4].lower(),link[5], link[6] ,datas, results, "investing")
 
 #Organise the growth rate for fred
@@ -340,17 +342,20 @@ indicators = [
 columnNames= ['Module','Indicator','Description',"Source of Data",'3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Positive', 'CB Stance', 'Date']+[""] * padding_column
 
 results = addSummaryCBStance(columnNames, sum_CBStance, padding_column, results)
-fichierExcel = "./reportGrowthrate.xlsx"
-fichierCSV = "./reportGrowthrate.csv"
+currentPath = os.getcwd()
+fichierExcel = currentPath+"\\reportGrowthrate.xlsx"
+fichierCSV = currentPath+"\\reportGrowthrate.csv"
 
 if os.path.isfile(fichierCSV):
-    modifyRowIndex = tagModifyRow()
+    modifyRowIndex = tagModifyRow(mainDf)
 
 #Check if all index has no change or there is no report in csv or excel, if so dont send email(rechcheck)
 #if( not all(rowIndex  for rowIndex in modifyRowIndex) or not (os.path.isfile(fichierCSV)) or not (os.path.isfile(fichierExcel))):
 
 if os.path.isfile(fichierExcel):
-    os.remove(fichierExcel)
+    if os.path.isfile(currentPath+"\\previous_reportGrowthrate.xlsx"):
+        os.remove(currentPath+"\\previous_reportGrowthrate.xlsx")
+    os.rename(fichierExcel,currentPath+"\\previous_reportGrowthrate.xlsx")
 
 if os.path.isfile(fichierCSV):
     os.remove(fichierCSV)

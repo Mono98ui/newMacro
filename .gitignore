@@ -6,6 +6,10 @@ restore_points.py
 reportGrowthrate*
 code.txt
 SQL/*.sql
+highlightdiff.py
+prev_transformation_log.txt
+previous_reportGrowthrate.xlsx
+transformation_log.txt
 __pycache__/*.pyc
 __pycache__/database.cpython-311.pyc
 __pycache__/private.cpython-311.pyc
