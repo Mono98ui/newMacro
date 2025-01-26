@@ -17,6 +17,7 @@ from round_decimal import round_decimal
 
 nbrHawkish = 0
 nbrDovish = 0
+
 #
 #Param:
 #t_name: table name
@@ -315,32 +316,32 @@ sum_CBStance.append(empty_string_list)
 
 padding_column = len(sum_CBStance) * padding_of_sum
 indicators = [
-    "m1sl",
-    "m2sl",
-    "bogz1fl893169105q",
-    "busloans",
-    "totalsl",
-    "us_leading_index_1968",
-    "building_permits_25",
-    "chicago_pmi_38",
-    "total_vehicle_sales_85",
-    "ism_manufacturing_pmi_173",
-    "durable_goods_orders_86",
-    "retail_sales_256",
-    "indpro",
-    "pce",
-    "payems",
-    "awhman",
-    "houst",
-    "ic4wsa",
-    "bogz1fl145020011q",
-    "gacdfsa066msfrbphi",
-    "cpiaucsl",
-    "ppiaco",
-    "ahetpi",
-    "t10yff",
-    "dtb3",
-    "fedfunds"
+    "M1 (Monthly)",
+    "M2 (Monthly)",
+    "Commercial paper outstanding (Quarterly)",
+    "Commercial and industrial loans at banks (Monthly)",
+    "Consumer instalment credit (Monthly)",
+    "LEI Conference Board",
+    "Housing Permits (Monthly)",
+    "Chicago PMI (Monthly)",
+    "Auto Sales (Monthly)",
+    "ISM manufacturing PMI",
+    "Total durable goods orders (Monthly)",
+    "Retail Sales US",
+    "Industrial Production (Monthly)",
+    "Personal Consumption Expenditures (Monthly)",
+    "Employment (Monthly)",
+    "Average work week (Monthly)",
+    "Housing Starts (Monthly)",
+    "Average weekly initial claims for unemployment (Weekly)",
+    "Inventories Level (Excluding Farms, Quarterly)",
+    "Philly Fed PMI (Monthly)",
+    "Consumer price index - all items (Monthly)",
+    "Producer price index - all items (Monthly)",
+    "Average hourly earnings (Monthly)",
+    "Yield Curve (Daily)",
+    "T-bill rate (Daily)",
+    "Fed funds rate (Monthly)"
 ]
 
 columnNames= ['Module','Indicator','Description',"Source of Data",'3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Positive', 'CB Stance', 'Date']+[""] * padding_column
