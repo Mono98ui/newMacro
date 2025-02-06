@@ -65,14 +65,15 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
     else:
         print("Not Catagorize: "+t_name)
         isCategorize = False
-         
-    if isCategorize:
-        if listTmp[len(listTmp)-3]:
-            global nbrHawkish
-            nbrHawkish+=1
-        else:
-            global nbrDovish
-            nbrDovish+=1
+
+    #Untag fedpolicy     
+    if isCategorize and not re.search(fed_pol,t_name):
+            if listTmp[len(listTmp)-3]:
+                global nbrHawkish
+                nbrHawkish+=1
+            else:
+                global nbrDovish
+                nbrDovish+=1
 
     return results
 #
@@ -211,9 +212,14 @@ def tagModifyRow(mainDf):
             modifyIndex = []
             #tag modify field
             for j in range(len(previousRowData)):
-                if not (previousRowData[j] == newRowData[j]):
-                    modifyIndex.append(j)
+                    if not (previousRowData[j] == newRowData[j]):
+                        modifyIndex.append(j)
             modifyRowIndex.append(modifyIndex)
+
+    #Untag fed policy
+    modifyRowIndex.pop(len(modifyRowIndex)-1)
+    modifyRowIndex.pop(len(modifyRowIndex)-1)
+    modifyRowIndex.pop(len(modifyRowIndex)-1)
             
     return modifyRowIndex
 #
