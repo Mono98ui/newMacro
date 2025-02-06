@@ -44,7 +44,10 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
     listTmp = list(datas[0])
     listTmp[len(listTmp)-1] = datas[0][len(datas[0])-1].strftime("%Y-%m-%d")
     
-
+    #Inverse logique pour cet indicateur
+    if(nameIndicator == "ic4wsa"):
+        listTmp[3] = "Dovish" if listTmp[2] else "Hawkish"
+    
     datas[0] = tuple(listTmp)
 
     if re.search(money_credit,t_name):
