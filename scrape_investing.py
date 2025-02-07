@@ -115,7 +115,7 @@ def method_show_more(info_link):
 
         if text_value.strip():
             list_data.append(format_data_db(timestamp, value))
-
+    driver.close()
     driver.quit()
     return list_data
 
