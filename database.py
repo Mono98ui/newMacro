@@ -69,9 +69,9 @@ class database:
             #Ajouter  "ON CONFLICT (date) DO NOTHING" a la requete pour debugger
             # ON CONFLICT (date) DO  update set value = %s where {}.date = %s
             cur.execute(
-            sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO NOTHING")
+            sql.SQL("insert into {}(date, value) values (%s, %s)  ON CONFLICT (date) DO  update set value = %s where {}.date = %s")
                 .format(sql.Identifier(t_name), sql.Identifier(t_name)),
-            [data["timestamp"], data["value"]])
+            [data["timestamp"], data["value"], data["value"], data["timestamp"]])
 
             #cur.execute(
             #sql.SQL("insert into {}(date, value) values (%s, %s) ON CONFLICT (date) DO NOTHING")
