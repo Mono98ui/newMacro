@@ -139,6 +139,26 @@ def computetwelvemonth(datas, diff):
 
     return results
 
+def computetwelvemonthPhily(datas, diff):
+    results = []
+
+    for i in range(len(datas)):
+        try:
+            current_value = round_decimal(datas[i][1])  # Apply round_decimal
+            if diff == 30 and i - 12 >= 0:
+                previous_value = round_decimal(datas[i - 12][1])
+                growth = ((current_value - previous_value) / abs(previous_value))
+            else:
+                growth = None
+        except (ZeroDivisionError, IndexError):
+            growth = round_decimal(0)
+        except Exception as e:
+            print(f"Something went wrong: {e}")
+            growth = None
+
+        results.append({"timestamp": datas[i][0], "value": round_decimal(growth), "intervalMonth": 12})
+
+    return results
 
 pr = Private()
 db = database(os.getenv('DB_NAME'), os.getenv('DB_USER'), os.getenv('DB_PASSWORD'))
@@ -163,10 +183,14 @@ db.update_status("process_fred", 3)
 
 # Calculate growth rate data from Fred
 for indicator in indicators:
+
     datas = db.fetch_table_Main(indicator[3].lower(), "", "", "")
     results = computethreemonth(datas, indicator[2])
     db.insert_value_component_gr(indicator[3].lower() + "_gr", results)
-    results = computetwelvemonth(datas, indicator[2])
+    if(indicator[3] == "t_GACDFSA066MSFRBPHI"):
+        results = computetwelvemonthPhily(datas, indicator[2])
+    else:
+        results = computetwelvemonth(datas, indicator[2])
     db.insert_value_component_gr(indicator[3].lower() + "_gr", results)
 
 db.update_status("process_fred", 4)

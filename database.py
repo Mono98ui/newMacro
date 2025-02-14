@@ -136,11 +136,19 @@ class database:
         afterSQL = sql.SQL(after)
         conn = psycopg2.connect("dbname={} user={} password={}".format(self.dbname,self.username, self.password ))
         cur = conn.cursor()
-        cur.execute(
-            sql.SQL("select CASE WHEN tb.is_oscillator THEN Null ELSE round(t1.value::numeric, 2) END, round(t2.value::numeric, 2), t1.value > t2.value,"
-                    +" CASE WHEN t1.value > t2.value THEN 'Hawkish' ELSE 'Dovish' END"
-                    +",t1.date from {} {}")
-                .format(sql.Identifier(t_name), afterSQL))
+        sql_query = sql.SQL(
+            "SELECT "
+            "CASE WHEN tb.is_oscillator THEN NULL ELSE ROUND(t1.value::numeric, 2) END, "
+            "ROUND(t2.value::numeric, 2), "
+            "CASE WHEN tb.is_oscillator THEN t2.value > 0 ELSE t1.value > t2.value END, "
+            "CASE WHEN NOT tb.is_oscillator THEN "
+            "    CASE WHEN t1.value > t2.value THEN 'Hawkish' ELSE 'Dovish' END "
+            "ELSE "
+            "    CASE WHEN t2.value > 0 THEN 'Hawkish' ELSE 'Dovish' END "
+            "END AS sentiment, "
+            "t1.date FROM {} {}"
+        ).format(sql.Identifier(t_name), afterSQL)  # Ensuring proper SQL formatting
+        cur.execute(sql_query)
         datas = cur.fetchall()
         conn.close()
         return datas
