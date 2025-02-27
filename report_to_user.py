@@ -71,10 +71,10 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
 
     #Untag fedpolicy     
     if isCategorize and not re.search(fed_pol,t_name):
-            if listTmp[len(listTmp)-3]:
+            if listTmp[3] == "Hawkish":
                 global nbrHawkish
                 nbrHawkish+=1
-            else:
+            elif listTmp[3] == "Dovish":
                 global nbrDovish
                 nbrDovish+=1
 
