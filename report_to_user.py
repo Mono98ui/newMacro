@@ -101,7 +101,7 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex, results):
             index = i
             threeMonthValue=results[i][4]
             twelveMonthValue=results[i][5]
-            indicator=results[i][1]
+            indicator=results[i][2]
             cbStanceValue = results[i][7]
             dateValue = results[i][8]
             messThreeMonth = ""
@@ -110,7 +110,7 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex, results):
             messTwelveMonth = "12 month: {},".format(twelveMonthValue)
             messCbstance = "Expected CB Stance: {},".format(cbStanceValue)
             messDate = "Date: {}".format(dateValue)
-            changeRow+="Indicator {} => {} {} {} {}\n".format(indicator, messThreeMonth, messTwelveMonth, messCbstance, messDate)+"\n    "
+            changeRow+="{} => {} {} {} {}\n".format(indicator, messThreeMonth, messTwelveMonth, messCbstance, messDate)+"\n    "
 
     if(len(changeRow) == 0):
         changeRow = "There is no change.\n"
@@ -120,8 +120,8 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex, results):
     This is the growth rate report.\n
     {}
     Here is the CBStance summary:\n
-    number of hawkish:{}\n
-    number of dovish:{}\n
+    Hawkish:{}\n
+    Dovish:{}\n
     Have a nice day\n
     macroBot.
     """.format(changeRow, nbrHawkish, nbrDovish)
