@@ -77,7 +77,7 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
             elif listTmp[3] == "Dovish":
                 global nbrDovish
                 nbrDovish+=1
-
+    
     return results
 #
 #Param:
@@ -87,7 +87,7 @@ def organizeDataPerModule(t_name, desc, isOsc ,datas, results, sourceData):
 #This function send the emails to the email_receiver
 #return: results
 #
-def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,indicators):
+def sendEmail(email_sender,email_receiver,filename,modifyRowIndex, results):
     pwd = os.getenv('MAIL_BOT_PWD')
 
     subject =" Growth Rate Report"
@@ -98,12 +98,19 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,in
     for i in range(len(modifyRowIndex)):
 
         if(modifyRowIndex[i]):
-            index = i 
-            fieldRow = ""
-            for field in modifyRowIndex[i]:
-                field = columnNames[field]
-                fieldRow+="    {}\n".format(field)
-            changeRow+="Columns of {} changed :\n".format(indicators[index])+fieldRow+"\n    "
+            index = i
+            threeMonthValue=results[i][4]
+            twelveMonthValue=results[i][5]
+            indicator=results[i][1]
+            cbStanceValue = results[i][7]
+            dateValue = results[i][8]
+            messThreeMonth = ""
+            if(threeMonthValue != None):
+                messThreeMonth = "3 month: {},".format(threeMonthValue)
+            messTwelveMonth = "12 month: {},".format(twelveMonthValue)
+            messCbstance = "Expected CB Stance: {},".format(cbStanceValue)
+            messDate = "Date: {}".format(dateValue)
+            changeRow+="Indicator {} => {} {} {} {}\n".format(indicator, messThreeMonth, messTwelveMonth, messCbstance, messDate)+"\n    "
 
     if(len(changeRow) == 0):
         changeRow = "There is no change.\n"
@@ -166,7 +173,7 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex,columnNames,in
 def addSummaryCBStance(columnNames, sum_CBStance, padding_column, results):
 
     index_CBStance = 0
-
+    mainDf = []
     #Concatenate the data into one dataframe
     for result in results:
         for i in range(len(result)):
@@ -185,7 +192,7 @@ def addSummaryCBStance(columnNames, sum_CBStance, padding_column, results):
         df = pd.DataFrame(my_array, columns = columnNames,)
         mainDf.append(df)
 
-    return results
+    return mainDf
 #
 #This function tag the modfiy data of each row
 #return: results
@@ -305,6 +312,10 @@ for indicator in indicators:
 +" limit 1")
     results = organizeDataPerModule(indicator[3].lower(), indicator[1], indicator[4], datas, results, "fred")
 
+resultConcat = []
+for resultModule in results:
+    resultConcat += resultModule
+
 mainDf = []
 padding_of_sum= 2
 sum_CBStance = []
@@ -353,8 +364,7 @@ indicators = [
 ]
 
 columnNames= ['Module','Indicator','Description',"Source of Data",'3 Month Ann.','12 Month/ 1 Year Growth', 'Has crossover/is Positive', 'CB Stance', 'Date']+[""] * padding_column
-
-results = addSummaryCBStance(columnNames, sum_CBStance, padding_column, results)
+mainDf = addSummaryCBStance(columnNames, sum_CBStance, padding_column, results)
 currentPath = os.getcwd()
 fichierExcel = currentPath+"\\reportGrowthrate.xlsx"
 fichierCSV = currentPath+"\\reportGrowthrate.csv"
@@ -379,7 +389,7 @@ pd.concat(mainDf, ignore_index=True).to_csv(currentPath+"\\reportGrowthrate.csv"
 #Create Excel file
 createExcelFileWithHighLight(fichierCSV, fichierExcel)
 
-sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'), fichierExcel, modifyRowIndex, columnNames, indicators)
+sendEmail(os.getenv('MAIL_BOT'),os.getenv('MAIL_BOT_DEST'), fichierExcel, modifyRowIndex, resultConcat)
 
 db.update_status("process_investing", 0)
 db.update_status("process_fred", 0)
