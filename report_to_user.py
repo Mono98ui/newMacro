@@ -160,7 +160,7 @@ def sendEmail(email_sender,email_receiver,filename,modifyRowIndex, results):
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         smtp.login(email_sender, pwd)
-        smtp.sendmail(email_sender,email_receiver, em.as_string())
+        smtp.sendmail(email_sender,email_receiver.split(','), em.as_string())
 #
 #Param:
 #columnNames: Columns of the report
