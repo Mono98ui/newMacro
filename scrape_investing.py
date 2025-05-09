@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service as fser
 from database import database
 from datetime import datetime
-import os
+import os,sys
 from private import Private
 from round_decimal import round_decimal
 import logging
@@ -134,6 +134,7 @@ for info_link in info_links:
             db.insert_value_component(info_link[4].strip(), data)
         except Exception as e:
             print(f"Error: {e}")
+            sys.exit(1)
             db.update_status("process_investing", -1)
             break
 

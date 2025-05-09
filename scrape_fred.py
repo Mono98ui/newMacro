@@ -1,7 +1,7 @@
 import pandas_datareader as pdr
 from datetime import datetime
 from database import database
-import os
+import os, sys
 from private import Private
 from decimal import Decimal
 import numpy as np
@@ -48,6 +48,7 @@ for indicator in indicators:
         db.insert_value_component(indicator[3].strip().lower(), list_datas)
     except Exception as e:
         print(f"Error: {e}")
+        sys.exit(1)
         db.update_status("process_fred", -1)
 
 # Update status after processing
