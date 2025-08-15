@@ -33,10 +33,13 @@ def log_transformation(indicator_name, message):
 
 # Open the browser and return the driver instance
 def open_web_browser():
+    xpi_add_block = "./uBlock0@raymondhill.net.xpi"
     options = webdriver.FirefoxOptions()
     options.binary_location = os.getenv('WEB_DRIVER_PATH')
     webdriver_path = "./geckodriver.exe"
-    return webdriver.Firefox(service=fser(executable_path=webdriver_path), options=options)
+    firefoxWebDriver= webdriver.Firefox(service=fser(executable_path=webdriver_path), options=options)
+    firefoxWebDriver.install_addon(xpi_add_block)
+    return firefoxWebDriver
 
 # Remove percentage sign and standardize value
 def remove_percentage(value):
