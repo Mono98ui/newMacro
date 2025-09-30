@@ -59,6 +59,7 @@ def format_data_db(timestamp, value):
 # Scrape data from investing.com until 2002-01-01
 def method_show_more(info_link):
     driver = open_web_browser()
+    time.sleep(3)
     driver.maximize_window()
 
     # Navigate to the link
