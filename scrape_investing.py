@@ -64,7 +64,7 @@ def method_show_more(info_link):
 
     # Navigate to the link
     driver.execute_script(f"location.href='{info_link[1]}';")
-    time.sleep(5)
+    time.sleep(10)
 
     show_more = driver.find_element(By.ID, info_link[2])
     table_name = info_link[4].strip()
@@ -81,7 +81,7 @@ def method_show_more(info_link):
     for _ in range(num_months // 6):
         if show_more.is_displayed() and show_more.is_enabled():
             show_more.click()
-            time.sleep(1)
+            time.sleep(0.5)
         else:
             break
 
