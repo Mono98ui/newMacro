@@ -59,7 +59,7 @@ def format_data_db(timestamp, value):
 # Scrape data from investing.com until 2002-01-01
 def method_show_more(info_link):
     driver = open_web_browser()
-    time.sleep(3)
+    time.sleep(5)
     driver.maximize_window()
 
     # Navigate to the link
@@ -81,7 +81,7 @@ def method_show_more(info_link):
     for _ in range(num_months // 6):
         if show_more.is_displayed() and show_more.is_enabled():
             show_more.click()
-            time.sleep(0.5)
+            time.sleep(1)
         else:
             break
 
